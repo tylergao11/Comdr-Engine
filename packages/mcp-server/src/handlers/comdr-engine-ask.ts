@@ -1,5 +1,5 @@
 // ============================================================
-// comdr-ask 工具处理程序
+// comdr-engine-ask 工具处理程序
 // 使用动态 require 加载 @comdr/core，每次调用自动重载最新编译产物
 // ============================================================
 
@@ -8,13 +8,13 @@ function buildServerInfo(): Record<string, unknown> {
   try { build = require('@comdr/core').VERSION as string; } catch { /* core not loaded yet */ }
   return {
     protocolVersion: '2025-03-26',
-    serverInfo: { name: 'comdr-mcp', version: '1.0.0', build },
+    serverInfo: { name: 'comdr-engine-mcp', version: '1.0.0', build },
     capabilities: { tools: {} },
   };
 }
 
 export const TOOL_DEFINITION = {
-  name: 'comdr-ask',
+  name: 'comdr-engine-ask',
   description: 'Comdr — Cocos Creator editor. Send natural language instructions, Comdr handles everything else internally.',
   inputSchema: {
     type: 'object',

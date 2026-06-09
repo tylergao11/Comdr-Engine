@@ -6,7 +6,7 @@
 
 | 工具 | 用途 | 触发词 |
 |------|------|--------|
-| `comdr-ask` | 自然语言操作 Cocos 编辑器 — 创建/编辑 prefab/scene、挂脚本、设属性、查 schema | 一切 Cocos 操作 |
+| `comdr-engine-ask` | 自然语言操作 Cocos 编辑器 — 创建/编辑 prefab/scene、挂脚本、设属性、查 schema | 一切 Cocos 操作 |
 
 ### 跨调用对话恢复
 
@@ -95,7 +95,7 @@ comdr/
 │   │   └── src/
 │   │       ├── server.ts                 # JSON-RPC 2.0 over stdio
 │   │       └── handlers/
-│   │           └── comdr-ask.ts          #   自然语言 Cocos 操作
+│   │           └── comdr-engine-ask.ts          #   自然语言 Cocos 操作
 │   └── overlay/              # Rust + Tauri v2，执行状态仪表台
 └── scripts/                  # 构建、同步、schema 提取、版本管理
 ```
@@ -174,7 +174,7 @@ catalog.resolve('testComdr'); // → 'a1b2c3d4...'（压缩 UUID）
 | `bridge/src/document.ts` | prefab/scene JSON 生命周期 |
 | `bridge/src/asset-probe.ts` | 资产查询 |
 | `bridge/src/probe-v2.ts` | 统一探针入口 |
-| `mcp-server/src/handlers/comdr-ask.ts` | MCP 工具 |
+| `mcp-server/src/handlers/comdr-engine-ask.ts` | MCP 工具 |
 
 ## 环境
 
@@ -191,4 +191,4 @@ npm run setup    # 依赖 + 编译 + Overlay + Bridge
 ```
 
 1. 打开 Cocos Creator → 启用 `comdr-cocos-bridge` → 重启
-2. 确认 `.mcp.json` 已配置 → MCP 客户端自动加载 `comdr-ask` 工具
+2. 确认 `.mcp.json` 已配置 → MCP 客户端自动加载 `comdr-engine-ask` 工具

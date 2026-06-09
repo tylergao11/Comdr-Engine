@@ -38,7 +38,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MCP_SERVER = void 0;
 const readline = __importStar(require("readline"));
-const comdr_ask_1 = require("./handlers/comdr-ask");
+const comdr_ask_1 = require("./handlers/comdr-engine-ask");
 /** 动态加载 image handler 模块（只清除 image/ 目录缓存，不波及 comdr-ask 及 @comdr/core 依赖树） */
 function loadImageModules() {
     for (const key of Object.keys(require.cache)) {
@@ -171,8 +171,8 @@ class McpServer {
         if (toolName === 'comdr-generate-image') {
             return this._handleImageTool(request, (args) => loadImageModules().handleGenerateImage(args));
         }
-        // ---- comdr-ask（重量，需要 hot-reload + abort）----
-        if (toolName !== 'comdr-ask') {
+        // ---- comdr-engine-ask（重量，需要 hot-reload + abort）----
+        if (toolName !== 'comdr-engine-ask') {
             this._write({
                 jsonrpc: '2.0',
                 id: request.id,

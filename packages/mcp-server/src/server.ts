@@ -3,12 +3,12 @@
 // ============================================================
 
 import * as readline from 'readline';
-import { handleInitialize, handleCancel, TOOL_DEFINITION } from './handlers/comdr-ask';
+import { handleInitialize, handleCancel, TOOL_DEFINITION } from './handlers/comdr-engine-ask';
 
 /** 动态加载 handler，每次调用前清除缓存确保热重载生效 */
-function reloadHandlerModule(): typeof import('./handlers/comdr-ask') {
+function reloadHandlerModule(): typeof import('./handlers/comdr-engine-ask') {
   // 精确清除 handler 模块缓存（require.resolve 拿到绝对路径）
-  try { delete require.cache[require.resolve('./handlers/comdr-ask')]; } catch { /* 首次加载 */ }
+  try { delete require.cache[require.resolve('./handlers/comdr-engine-ask')]; } catch { /* 首次加载 */ }
   // 清除所有 @comdr/mcp-server 相关模块（monorepo 和 npm 两种路径）
   for (const key of Object.keys(require.cache)) {
     const normalized = key.replace(/\\/g, '/');
@@ -16,7 +16,7 @@ function reloadHandlerModule(): typeof import('./handlers/comdr-ask') {
       delete require.cache[key];
     }
   }
-  return require('./handlers/comdr-ask');
+  return require('./handlers/comdr-engine-ask');
 }
 
 // ===== 类型 =====
@@ -139,8 +139,8 @@ class McpServer {
     const params = request.params as { name?: string; arguments?: Record<string, unknown> } | undefined;
     const toolName = params?.name;
 
-    // ---- comdr-ask（唯一 MCP 工具）----
-    if (toolName !== 'comdr-ask') {
+    // ---- comdr-engine-ask（唯一 MCP 工具）----
+    if (toolName !== 'comdr-engine-ask') {
       this._write({
         jsonrpc: '2.0',
         id: request.id,

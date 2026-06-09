@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "comdr": {
+    "comdr-engine": {
       "command": "node",
       "args": ["node_modules/@comdr/mcp-server/dist/index.js"],
       "_comment": "开发时可用 \"packages/mcp-server/dist/index.js\"（monorepo）；发布后推荐 npx @comdr/mcp-server"
