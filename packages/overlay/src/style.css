@@ -1,0 +1,208 @@
+:root {
+  --glass-dim: rgba(8,8,8,0.40);
+  --glass-solid: rgba(8,8,8,1);
+  --surface-dim: rgba(255,255,255,0.025);
+  --surface-solid: rgba(255,255,255,0.055);
+  --border-dim: rgba(255,255,255,0.035);
+  --border-solid: rgba(255,255,255,0.08);
+  --amber: #f59e0b;
+  --green: #22c55e; --green-r:34;--green-g:197;--green-b:94;
+  --red: #ef4444;
+  --text: #e6e6e6;
+  --text2: #8c8c8c;
+  --text3: #5c5c5c;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --alpha: 0.55;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;width:100%;overflow:hidden}html{background:rgba(0,0,0,0.001)}body{font-family:Inter,sans-serif;font-size:13px;color:var(--text);user-select:none;-webkit-user-select:none;background:transparent}
+
+/* ====== Glass container ====== */
+#app {
+  height:100%;display:flex;border-radius:22px;overflow:hidden;
+  --surface:var(--surface-dim);--border:var(--border-dim);--blur:10px;
+  background:var(--glass-dim);
+  border:1px solid var(--border);
+  backdrop-filter:blur(var(--blur));
+  -webkit-backdrop-filter:blur(var(--blur));
+  transition:background .5s var(--ease),border-color .5s var(--ease),backdrop-filter .5s var(--ease);
+}
+#app.hover {
+  --surface:var(--surface-solid);--border:var(--border-solid);--blur:18px;
+  background:var(--glass-solid);
+}
+
+/* === 事件进行中：边框呼吸 === */
+#app.active {
+  box-shadow:inset 0 0 0 1.5px rgba(var(--green-r),var(--green-g),var(--green-b),0.6);
+  animation:border-breathe 1s var(--ease) infinite alternate;
+}
+@keyframes border-breathe{
+  from{box-shadow:inset 0 0 0 1.5px rgba(var(--green-r),var(--green-g),var(--green-b),0.15)}
+  to{box-shadow:inset 0 0 0 1.5px rgba(var(--green-r),var(--green-g),var(--green-b),0.85)}
+}
+
+/* === Dot 暴走 === */
+#app.active #dot{background:var(--green);box-shadow:0 0 10px rgba(var(--green-r),var(--green-g),var(--green-b),0.7),0 0 20px rgba(var(--green-r),var(--green-g),var(--green-b),0.35);animation:dot-racing .35s ease-in-out infinite;}
+@keyframes dot-racing{0%,100%{transform:scale(1);box-shadow:0 0 6px rgba(var(--green-r),var(--green-g),var(--green-b),0.4),0 0 12px rgba(var(--green-r),var(--green-g),var(--green-b),0.15)}50%{transform:scale(1.18);box-shadow:0 0 16px rgba(var(--green-r),var(--green-g),var(--green-b),0.9),0 0 28px rgba(var(--green-r),var(--green-g),var(--green-b),0.5)}}
+
+/* === C 文字：racing 更剧烈 === */
+#nm.c-racing .c-wobble{animation-name:c-racing;animation-duration:.15s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;color:var(--green)}
+#nm.c-racing span:nth-child(n+2){animation-name:m-racing;animation-duration:.12s;animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+@keyframes c-racing{0%{transform:rotate(0deg)}25%{transform:rotate(14deg)}50%{transform:rotate(-11deg)}75%{transform:rotate(7deg)}100%{transform:rotate(0deg)}}
+@keyframes m-racing{0%,100%{transform:translateX(0)}25%{transform:translateX(2px)}75%{transform:translateX(-2px)}}
+
+/* === 信息栏脉冲条 === */
+#app.active #tbar{display:inline-block;width:32px;height:2px;background:var(--amber);border-radius:1px;animation:tbar-pulse .5s ease-in-out infinite alternate;vertical-align:middle}
+#app.active #tbar.has-token{display:none}
+@keyframes tbar-pulse{from{opacity:.2;background:var(--green)}to{opacity:1;background:var(--green)}}
+
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:transparent}
+#log,#info{opacity:var(--alpha);transition:opacity .5s var(--ease)}
+#app.hover #log,#app.hover #info{opacity:1}
+
+/* === Snap to top / docked === */
+#app.docked #log,#app.docked #info,#app.docked #doc{display:none}
+#app.docked #tb{border-bottom:none;height:32px}
+#app.docked #main{opacity:1}
+
+/* ====== Titlebar 28px ====== */
+#tb{display:flex;align-items:center;height:28px;padding:0 10px;gap:6px;border-bottom:1px solid var(--border);position:relative;transition:border-color .5s var(--ease)}
+#dot{width:9px;height:9px;border-radius:50%;background:var(--text3);flex-shrink:0;transition:background .4s var(--ease),box-shadow .4s var(--ease);box-shadow:0 0 6px rgba(92,92,92,.3);animation:dot-breathe 2.4s var(--ease) infinite}
+#dot.bridge-on{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.5);animation-name:dot-breathe-on}
+#nm{font-size:11px;font-weight:500;color:#b4b4b4;flex-shrink:0;display:flex;gap:0}
+#nm span{display:inline-block}
+.c-wobble{animation:c-idle 4s var(--ease) infinite,dot-glow 2.4s var(--ease) infinite;transform-origin:center center}
+
+/* === Omdr 小弟 staggered delays === */
+#nm span:nth-child(2){animation-delay:.12s}
+#nm span:nth-child(3){animation-delay:.24s}
+#nm span:nth-child(4){animation-delay:.36s}
+#nm span:nth-child(5){animation-delay:.48s}
+
+/* === 状态：idle — 极其安静，做对比基线 === */
+#nm.c-idle .c-wobble{animation-name:c-idle,dot-glow;animation-duration:5s,2.4s;animation-timing-function:var(--ease),var(--ease);animation-iteration-count:infinite,infinite}
+#nm.c-idle span:nth-child(n+2){animation-name:m-idle;animation-duration:3s;animation-timing-function:var(--ease);animation-iteration-count:infinite}
+#nm.bridge-on.c-idle .c-wobble{animation-name:c-idle,dot-glow-bridge}
+
+/* === 状态：bridged === */
+#nm.c-bridged .c-wobble{animation-name:c-bridged,dot-glow-bridge;animation-duration:1s,2.4s;animation-timing-function:var(--ease),var(--ease);animation-iteration-count:3,infinite;animation-fill-mode:forwards,none}
+#nm.c-bridged span:nth-child(n+2){animation-name:m-bridged;animation-duration:1s;animation-timing-function:var(--ease);animation-iteration-count:3;animation-fill-mode:forwards}
+
+/* === 状态：watching — 缓慢呼吸 === */
+#nm.c-watching .c-wobble{animation-name:c-watching,dot-glow;animation-duration:3s,2.4s;animation-timing-function:var(--ease),var(--ease);animation-iteration-count:infinite,infinite}
+#nm.c-watching span:nth-child(n+2){animation-name:m-watching;animation-duration:3s;animation-timing-function:var(--ease);animation-iteration-count:infinite}
+
+/* === 状态：executing — 快速微动，命令在跑 === */
+#nm.c-executing .c-wobble{animation-name:c-executing,dot-glow;animation-duration:.4s,2.4s;animation-timing-function:ease-in-out,var(--ease);animation-iteration-count:infinite,infinite}
+#nm.c-executing span:nth-child(n+2){animation-name:m-executing;animation-duration:.25s;animation-timing-function:ease-in-out;animation-iteration-count:infinite}
+
+/* === 状态：error — 急剧抖动 === */
+#nm.c-error .c-wobble{animation-name:c-error;animation-duration:.4s;animation-timing-function:ease-out;animation-iteration-count:1;animation-fill-mode:forwards}
+#nm.c-error span:nth-child(n+2){animation-name:m-error;animation-duration:.4s;animation-timing-function:ease-out;animation-iteration-count:1;animation-fill-mode:forwards}
+
+/* === 状态：done — 轻快旋转收尾 === */
+#nm.c-done .c-wobble{animation-name:c-done,dot-glow;animation-duration:.6s,2.4s;animation-timing-function:cubic-bezier(.34,1.56,.64,1),var(--ease);animation-iteration-count:1,1;animation-fill-mode:forwards,forwards}
+#nm.c-done span:nth-child(n+2){animation-name:m-done;animation-duration:.5s;animation-timing-function:cubic-bezier(.34,1.56,.64,1);animation-iteration-count:1;animation-fill-mode:forwards}
+@keyframes c-watching{0%,100%{transform:rotate(0deg)}25%{transform:rotate(3deg)}75%{transform:rotate(-2deg)}}
+@keyframes m-watching{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+#doc{font-size:10px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px}
+#drag{flex:1;height:100%;-webkit-app-region:drag}
+/* ====== Log — 可滚动，新条目从底部推入 ====== */
+#log{flex:1;overflow-y:auto;overflow-x:hidden;padding:4px 10px}
+#log-spacer{flex:1 0 auto;min-height:0}
+#logi{display:flex;flex-direction:column;gap:2px}
+
+.log-card{display:flex;align-items:flex-start;gap:5px;font-size:11px;animation:ci .28s ease-out;padding:2px 0;border-left:2px solid transparent;padding-left:4px}
+.log-card .ci{color:var(--text3);font-family:'JetBrains Mono',monospace;flex-shrink:0;font-size:14px;width:18px;text-align:center;line-height:1.4}
+.log-card .ct{color:var(--text3);font-family:'JetBrains Mono',monospace;flex-shrink:0;font-size:9px;letter-spacing:0.5px;text-transform:uppercase;min-width:34px;line-height:1.4;padding-top:1px}
+.log-card .e{color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:10px;flex-shrink:0;min-width:38px;text-align:right;line-height:1.4}
+.log-card .st{flex-shrink:0;width:12px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.4;padding-top:1px}
+.st.ok{color:var(--green)}.st.err{color:var(--red);cursor:pointer}.st.pending{color:var(--text3);animation:spin-pending .8s linear infinite;display:inline-block}
+/* summary — 允许换行，不截断 */
+.log-card .s{flex:1;font-family:'JetBrains Mono',monospace;font-size:11px;color:#c0c0c0;font-weight:400;line-height:1.4;word-break:break-word;overflow-wrap:break-word;white-space:normal}
+
+/* === error override: 失败整卡变红 === */
+.log-card.err{border-left-color:var(--red)}.log-card.err .ci,.log-card.err .ct{color:var(--red)}.log-card.err .s{color:var(--red)}
+
+/* === per-command accent === */
+.log-card.compile{border-left-color:var(--amber)}.log-card.compile .ci,.log-card.compile .ct{color:var(--amber)}
+.log-card.write{border-left-color:var(--green)}.log-card.write .ci,.log-card.write .ct{color:var(--green)}
+.log-card.probe{border-left-color:#60a5fa}.log-card.probe .ci,.log-card.probe .ct{color:#60a5fa}
+.log-card.open{border-left-color:#22d3ee}.log-card.open .ci,.log-card.open .ct{color:#22d3ee}
+.log-card.ctx,.log-card.detail,.log-card.schema{border-left-color:#c084fc}.log-card.ctx .ci,.log-card.ct,.log-card.detail .ci,.log-card.detail .ct,.log-card.schema .ci,.log-card.schema .ct{color:#c084fc}
+.log-card\.set-prop,.log-card\.set-props,.log-card\.set-active,.log-card.reparent,.log-card.duplicate{border-left-color:#fbbf24}.log-card\.set-prop .ci,.log-card\.set-prop .ct,.log-card\.set-props .ci,.log-card\.set-props .ct,.log-card\.set-active .ci,.log-card\.set-active .ct,.log-card.reparent .ci,.log-card.reparent .ct,.log-card.duplicate .ci,.log-card.duplicate .ct{color:#fbbf24}
+.log-card\.delete-node{border-left-color:var(--red)}.log-card\.delete-node .ci,.log-card\.delete-node .ct{color:var(--red)}
+.log-card.save{border-left-color:#a3e635}.log-card.save .ci,.log-card.save .ct{color:#a3e635}
+.log-card.undo,.log-card.ask{border-left-color:var(--text3)}.log-card.undo .ci,.log-card.undo .ct,.log-card.ask .ci,.log-card.ask .ct{color:var(--text3)}
+
+/* === 执行日志 watching 元素 === */
+.log-msg{font-size:11px;color:#fff;padding:5px 8px;margin:3px 0;font-family:'JetBrains Mono',monospace;animation:ci .28s ease-out;line-height:1.4;border:2px solid rgba(255,255,255,0.12);border-radius:6px;white-space:pre-wrap;word-break:break-word;max-height:120px;overflow-y:auto}
+.log-round-sep{text-align:center;font-size:9px;color:var(--text3);padding:2px 0 0;font-family:'JetBrains Mono',monospace;animation:ci .28s ease-out}
+.log-session-done{display:block;text-align:center;font-size:9px;color:var(--text3);padding:3px 0 0;font-family:'JetBrains Mono',monospace;animation:ci .28s ease-out}
+
+/* ====== Info bar 20px ====== */
+#info{display:flex;align-items:center;height:20px;padding:0 10px;gap:6px;border-top:1px solid var(--border);font-size:9px;font-family:'JetBrains Mono',monospace;transition:border-color .5s var(--ease)}
+.c{display:flex;align-items:center;gap:4px;color:var(--text3);background:var(--surface);padding:2px 8px;border-radius:8px;border:1px solid var(--border);transition:background .5s var(--ease),border-color .5s var(--ease)}
+/* === 清空按钮 === */
+#clr{width:20px;height:20px;border:none;background:var(--surface);color:var(--text3);cursor:pointer;border-radius:8px;font-size:11px;transition:.15s;flex-shrink:0;margin-left:auto;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
+#clr:hover{color:var(--red);background:rgba(255,255,255,.08);border-color:var(--red)}
+
+/* === Token flip === */
+#tp.flip{animation:tok-flip .3s var(--ease)}
+@keyframes tok-flip{0%{opacity:1;transform:translateY(0)}40%{opacity:0;transform:translateY(-8px)}60%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+
+/* === Token display === */
+#tp{color:var(--text3)}
+
+@keyframes spin-pending{to{transform:rotate(360deg)}}
+
+/* === 清空：从下往上，一条条往左飘出 === */
+@keyframes clear-out{0%{opacity:1;transform:translateX(0) translateY(0) rotate(0deg)}100%{opacity:0;transform:translateX(-120px) translateY(-40px) rotate(-15deg)}}
+.log-card.clearing{animation:clear-out .35s ease-out forwards;pointer-events:none}
+.log-round-sep.clearing,.log-session-done.clearing{animation:clear-out .25s ease-out forwards}
+
+/* === Error detail === */
+.log-ed{font-size:10px;color:var(--red);padding:4px 0 2px 20px;display:none;font-family:'JetBrains Mono',monospace;white-space:pre-wrap;word-break:break-word;line-height:1.5;max-height:120px;overflow-y:auto}
+/* === Undo button === */
+.undo-btn{width:18px;height:18px;border:none;background:transparent;color:var(--text3);cursor:pointer;border-radius:4px;font-size:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;transition:.15s;opacity:0}
+.log-card:hover .undo-btn{opacity:0.7}
+.log-card .undo-btn:hover{opacity:1;color:#fbbf24;background:rgba(251,191,36,.12)}
+.log-card .undo-btn:disabled{opacity:0.5;cursor:default}
+
+/* ====== Scrollbar ====== */
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ====== Animations ====== */
+@keyframes ci{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+
+/* Queue: 从底部弹入 — spring 曲线 */
+@keyframes queue-in{0%{opacity:0;transform:translateY(18px) scale(.95)}60%{opacity:1;transform:translateY(-2px) scale(1.01)}100%{opacity:1;transform:translateY(0) scale(1)}}
+/* Queue: 顶部推出 — 柔和消散 */
+@keyframes queue-out{0%{opacity:1;transform:translateY(0)}60%{opacity:.3;transform:translateY(-8px)}100%{opacity:0;transform:translateY(-14px);max-height:0;margin:0;padding:0;overflow:hidden}}
+
+.log-card.queue-in{animation:queue-in .32s cubic-bezier(.34,1.56,.64,1) forwards}
+.log-card.queue-out{animation:queue-out .22s ease-in forwards}
+.log-round-sep.queue-in,.log-session-done.queue-in{animation:queue-in .28s cubic-bezier(.34,1.56,.64,1) forwards}
+.log-round-sep.queue-out,.log-session-done.queue-out{animation:queue-out .18s ease-in forwards}
+
+@keyframes dot-breathe{0%,100%{box-shadow:0 0 2px rgba(92,92,92,.15)}50%{box-shadow:0 0 10px rgba(92,92,92,.5),0 0 18px rgba(92,92,92,.2)}}
+@keyframes dot-breathe-on{0%,100%{box-shadow:0 0 3px rgba(34,197,94,.25)}50%{box-shadow:0 0 18px rgba(34,197,94,.9),0 0 28px rgba(34,197,94,.35)}}
+@keyframes dot-glow{0%,100%{color:#b4b4b4;text-shadow:0 0 0 transparent}50%{color:#c0c0c0;text-shadow:0 0 6px rgba(200,200,200,.3)}}
+@keyframes dot-glow-bridge{0%,100%{color:#b4b4b4;text-shadow:0 0 0 rgba(34,197,94,0)}50%{color:#22c55e;text-shadow:0 0 10px rgba(34,197,94,.5)}}
+
+/* --- C 动画 --- */
+@keyframes c-idle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(2deg)}75%{transform:rotate(-1.5deg)}}
+@keyframes c-bridged{0%,100%{transform:rotate(0deg) scaleY(1)}40%{transform:rotate(0deg) scaleY(1.08)}60%{transform:rotate(0deg) scaleY(1)}}
+@keyframes c-watching{0%,100%{transform:rotate(0deg)}25%{transform:rotate(5deg) scale(1.03)}75%{transform:rotate(-4deg) scale(1)}}
+@keyframes c-executing{0%{transform:rotate(0deg)}25%{transform:rotate(8deg)}50%{transform:rotate(-6deg)}75%{transform:rotate(4deg)}100%{transform:rotate(0deg)}}
+@keyframes c-error{0%{transform:rotate(0deg)}15%{transform:rotate(-12deg)}30%{transform:rotate(10deg)}45%{transform:rotate(-7deg)}60%{transform:rotate(5deg)}75%{transform:rotate(-3deg)}100%{transform:rotate(0deg)}}
+@keyframes c-done{0%{transform:rotate(0deg)}40%{transform:rotate(370deg)}70%{transform:rotate(355deg)}100%{transform:rotate(360deg)}}
+
+/* --- omdr 小弟反应 --- */
+@keyframes m-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-0.8px)}}
+@keyframes m-bridged{0%,100%{transform:translateY(0) scaleY(1)}30%{transform:translateY(-2px) scaleY(1.05)}60%{transform:translateY(0) scaleY(1)}}
+@keyframes m-watching{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes m-executing{0%,100%{transform:translateX(0)}25%{transform:translateX(1px)}75%{transform:translateX(-1px)}}
+@keyframes m-error{0%,100%{transform:rotate(6deg)}}
+@keyframes m-done{0%{transform:translateY(0)}30%{transform:translateY(-4px)}60%{transform:translateY(0)}80%{transform:translateY(-1.5px)}100%{transform:translateY(0)}}

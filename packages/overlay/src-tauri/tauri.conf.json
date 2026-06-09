@@ -1,0 +1,6 @@
+{
+  "productName":"Comdr","version":"0.5.0","identifier":"com.comdr.overlay",
+  "build":{"beforeDevCommand":"npx vite","devUrl":"http://localhost:1420","beforeBuildCommand":"npx vite build","frontendDist":"../dist"},
+  "app":{"windows":[{"title":"Comdr","width":380,"height":240,"minWidth":280,"minHeight":90,"resizable":false,"decorations":false,"transparent":true,"alwaysOnTop":true,"skipTaskbar":true,"shadow":false,"center":false,"x":9999,"y":9999}],"security":{"csp":null}},
+  "plugins":{"shell":{"open":true}}
+}

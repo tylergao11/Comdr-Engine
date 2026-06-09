@@ -1,0 +1,3963 @@
+{
+  "schema": "Comdr.component-schema.v1",
+  "source": "engine-ts-source",
+  "generatedBy": "extract-component-schema",
+  "version": "resources",
+  "parsedAt": "2026-06-08T17:43:20.666Z",
+  "components": {
+    "cc.BitmapFont": {
+      "properties": {
+        "fntConfig": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.SpriteAtlas": {
+      "properties": {
+        "spriteFrames": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.TTFFont": {
+      "properties": {
+        "_fontFamily": {
+          "type": "string",
+          "default": null
+        }
+      }
+    },
+    "cc.Graphics": {
+      "properties": {
+        "lineJoin": {
+          "type": "component",
+          "default": 0
+        },
+        "lineCap": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.Label": {
+      "properties": {
+        "horizontalAlign": {
+          "type": "int",
+          "default": 0
+        },
+        "verticalAlign": {
+          "type": "int",
+          "default": 0
+        },
+        "overflow": {
+          "type": "int",
+          "default": 0
+        },
+        "font": {
+          "type": "asset",
+          "default": null
+        },
+        "cacheMode": {
+          "type": "int",
+          "default": 0
+        },
+        "_outlineColor": {
+          "type": "color",
+          "default": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        },
+        "_shadowColor": {
+          "type": "color",
+          "default": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        },
+        "_shadowOffset": {
+          "type": "vec2",
+          "default": {
+            "x": 2,
+            "y": 2
+          }
+        }
+      }
+    },
+    "cc.Mask": {
+      "properties": {
+        "type": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.RichText": {
+      "properties": {
+        "horizontalAlign": {
+          "type": "int",
+          "default": 0
+        },
+        "verticalAlign": {
+          "type": "int",
+          "default": 0
+        },
+        "fontColor": {
+          "type": "color"
+        },
+        "font": {
+          "type": "asset",
+          "default": null
+        },
+        "cacheMode": {
+          "type": "int",
+          "default": 0
+        },
+        "imageAtlas": {
+          "type": "asset",
+          "default": null
+        },
+        "_userDefinedFont": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.Sprite": {
+      "properties": {
+        "spriteAtlas": {
+          "type": "asset"
+        },
+        "spriteFrame": {
+          "type": "asset",
+          "default": null
+        },
+        "type": {
+          "type": "int",
+          "default": 0
+        },
+        "fillType": {
+          "type": "int",
+          "default": 0
+        },
+        "sizeMode": {
+          "type": "int",
+          "default": 0
+        },
+        "_fillCenter": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "_atlas": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.Canvas": {
+      "properties": {
+        "cameraComponent": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.SpriteRenderer": {
+      "properties": {
+        "spriteFrame": {
+          "type": "asset",
+          "default": null
+        },
+        "_color": {
+          "type": "color"
+        },
+        "_size": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      }
+    },
+    "cc.UIRenderer": {
+      "properties": {
+        "customMaterial": {
+          "type": "asset"
+        },
+        "_color": {
+          "type": "color"
+        }
+      }
+    },
+    "cc.UITransform": {
+      "properties": {
+        "_contentSize": {
+          "type": "size",
+          "default": {
+            "width": 100,
+            "height": 100
+          }
+        },
+        "_anchorPoint": {
+          "type": "vec2",
+          "default": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      }
+    },
+    "cc.Mesh": {
+      "properties": {
+        "_struct": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.ModelBakeSettings": {
+      "properties": {
+        "lightmapSize": {
+          "type": "component",
+          "default": 64
+        },
+        "useLightProbe": {
+          "type": "component",
+          "default": false
+        },
+        "bakeToLightProbe": {
+          "type": "component",
+          "default": true
+        },
+        "reflectionProbe": {
+          "type": "component"
+        },
+        "bakeToReflectionProbe": {
+          "type": "component",
+          "default": true
+        },
+        "texture": {
+          "type": "asset",
+          "default": null
+        },
+        "uvParam": {
+          "type": "vec4",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 0
+          }
+        }
+      }
+    },
+    "cc.MeshRenderer": {
+      "properties": {
+        "shadowBias": {
+          "type": "component",
+          "default": 0
+        },
+        "shadowNormalBias": {
+          "type": "component",
+          "default": 0
+        },
+        "shadowCastingMode": {
+          "type": "component",
+          "default": 0
+        },
+        "receiveShadow": {
+          "type": "component"
+        },
+        "mesh": {
+          "type": "asset",
+          "default": null
+        },
+        "isGlobalStandardSkinObject": {
+          "type": "component"
+        },
+        "bakeSettings": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.DirectionalLight": {
+      "properties": {
+        "illuminance": {
+          "type": "component"
+        },
+        "shadowEnabled": {
+          "type": "component",
+          "default": false
+        },
+        "shadowPcf": {
+          "type": "component",
+          "default": 0
+        },
+        "shadowBias": {
+          "type": "component",
+          "default": 0.00001
+        },
+        "shadowNormalBias": {
+          "type": "component",
+          "default": 0
+        },
+        "shadowSaturation": {
+          "type": "component",
+          "default": 1
+        },
+        "shadowDistance": {
+          "type": "component",
+          "default": 50
+        },
+        "shadowInvisibleOcclusionRange": {
+          "type": "component",
+          "default": 200
+        },
+        "csmLevel": {
+          "type": "component",
+          "default": 0
+        },
+        "enableCSM": {
+          "type": "component"
+        },
+        "csmLayerLambda": {
+          "type": "component",
+          "default": 0.75
+        },
+        "csmOptimizationMode": {
+          "type": "component",
+          "default": 0
+        },
+        "shadowFixedArea": {
+          "type": "component",
+          "default": false
+        },
+        "shadowNear": {
+          "type": "component",
+          "default": 0.1
+        },
+        "shadowFar": {
+          "type": "component",
+          "default": 10
+        },
+        "shadowOrthoSize": {
+          "type": "component",
+          "default": 5
+        },
+        "csmAdvancedOptions": {
+          "type": "component",
+          "default": false
+        },
+        "csmLayersTransition": {
+          "type": "component",
+          "default": false
+        },
+        "csmTransitionRange": {
+          "type": "component",
+          "default": 0.05
+        }
+      }
+    },
+    "cc.Light": {
+      "properties": {
+        "staticSettings": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PointLight": {
+      "properties": {
+        "luminousFlux": {
+          "type": "component"
+        },
+        "luminance": {
+          "type": "component"
+        },
+        "term": {
+          "type": "component",
+          "default": 0
+        },
+        "range": {
+          "type": "component",
+          "default": 1
+        }
+      }
+    },
+    "cc.RangedDirectionalLight": {
+      "properties": {
+        "illuminance": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.SphereLight": {
+      "properties": {
+        "luminousFlux": {
+          "type": "component"
+        },
+        "luminance": {
+          "type": "component"
+        },
+        "term": {
+          "type": "component",
+          "default": 0
+        },
+        "size": {
+          "type": "component",
+          "default": 0.15
+        },
+        "range": {
+          "type": "component",
+          "default": 1
+        }
+      }
+    },
+    "cc.SpotLight": {
+      "properties": {
+        "term": {
+          "type": "component",
+          "default": 0
+        },
+        "size": {
+          "type": "component",
+          "default": 0.15
+        },
+        "shadowEnabled": {
+          "type": "component",
+          "default": false
+        },
+        "shadowPcf": {
+          "type": "component",
+          "default": 0
+        },
+        "shadowBias": {
+          "type": "component",
+          "default": 0.00001
+        },
+        "shadowNormalBias": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.LOD": {
+      "properties": {
+        "screenUsagePercentage": {
+          "type": "component",
+          "default": 1
+        },
+        "renderers": {
+          "type": "component"
+        },
+        "triangleCount": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.LODGroup": {
+      "properties": {
+        "LODs": {
+          "type": "component"
+        },
+        "_localBoundaryCenter": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.ReflectionProbe": {
+      "properties": {
+        "size": {
+          "type": "vec3",
+          "default": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "visibility": {
+          "type": "component"
+        },
+        "fastBake": {
+          "type": "component",
+          "default": false
+        },
+        "cubemap": {
+          "type": "asset",
+          "default": null
+        },
+        "_backgroundColor": {
+          "type": "color",
+          "default": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        },
+        "_sourceCamera": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.SkeletalAnimation": {
+      "properties": {
+        "sockets": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.SkinnedMeshUnit": {
+      "properties": {
+        "_localTransform": {
+          "type": "object",
+          "default": null
+        },
+        "_offset": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "_size": {
+          "type": "vec2",
+          "default": {
+            "x": 1,
+            "y": 1
+          }
+        }
+      }
+    },
+    "cc.SkinnedMeshBatchRenderer": {
+      "properties": {
+        "units": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.SkinnedMeshRenderer": {
+      "properties": {
+        "skeleton": {
+          "type": "asset"
+        },
+        "skinningRoot": {
+          "type": "node"
+        }
+      }
+    },
+    "cc.AnimationClip": {
+      "properties": {
+        "_tracks": {
+          "type": "component"
+        },
+        "_exoticAnimation": {
+          "type": "component",
+          "default": null
+        },
+        "_events": {
+          "type": "component"
+        },
+        "_embeddedPlayers": {
+          "type": "component"
+        },
+        "_additiveSettings": {
+          "type": "component",
+          "default": null
+        },
+        "_auxiliaryCurveEntries": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.AnimationClipAdditiveSettings": {
+      "properties": {
+        "refClip": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.Animation": {
+      "properties": {
+        "clips": {
+          "type": "asset"
+        },
+        "defaultClip": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.AuxiliaryCurveEntry": {
+      "properties": {
+        "curve": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.EmbeddedAnimationClipPlayable": {
+      "properties": {
+        "clip": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.EmbeddedPlayer": {
+      "properties": {
+        "playable": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ExoticAnimation": {
+      "properties": {
+        "_nodeAnimations": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.ExoticNodeAnimation": {
+      "properties": {
+        "_position": {
+          "type": "component",
+          "default": null
+        },
+        "_rotation": {
+          "type": "component",
+          "default": null
+        },
+        "_scale": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ExoticVectorLikeTrackValues": {
+      "properties": {
+        "_values": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.ExoticTrack": {
+      "properties": {
+        "times": {
+          "type": "component"
+        },
+        "values": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.QuantizedFloatArray": {
+      "properties": {
+        "originalPrecision": {
+          "type": "int"
+        },
+        "min": {
+          "type": "float"
+        },
+        "extent": {
+          "type": "float"
+        },
+        "values": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.animation.AnimationController": {
+      "properties": {
+        "graph": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ClipOverrideEntry": {
+      "properties": {
+        "original": {
+          "type": "asset"
+        },
+        "substitution": {
+          "type": "asset"
+        }
+      }
+    },
+    "cc.AnimationGraphVariant": {
+      "properties": {
+        "original": {
+          "type": "component"
+        },
+        "_graph": {
+          "type": "component",
+          "default": null
+        },
+        "_clipOverrides": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ClipOverrideMap": {
+      "properties": {
+        "_entries": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Transition": {
+      "properties": {
+        "from": {
+          "type": "int"
+        },
+        "to": {
+          "type": "int"
+        },
+        "conditions": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.DurationalTransition": {
+      "properties": {
+        "startEventBinding": {
+          "type": "component",
+          "default": null
+        },
+        "endEventBinding": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ProceduralPoseState": {
+      "properties": {
+        "graph": {
+          "type": "component",
+          "default": null
+        },
+        "transitionInEventBinding": {
+          "type": "component",
+          "default": null
+        },
+        "transitionOutEventBinding": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.animation.StateMachine": {
+      "properties": {
+        "_states": {
+          "type": "int"
+        },
+        "_transitions": {
+          "type": "int"
+        },
+        "_entryState": {
+          "type": "int"
+        },
+        "_exitState": {
+          "type": "int"
+        },
+        "_anyState": {
+          "type": "int"
+        }
+      }
+    },
+    "cc.animation.SubStateMachine": {
+      "properties": {
+        "_stateMachine": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.PoseGraphStash": {
+      "properties": {
+        "graph": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.animation.Layer": {
+      "properties": {
+        "_stateMachine": {
+          "type": "component"
+        },
+        "mask": {
+          "type": "component",
+          "default": null
+        },
+        "_stashes": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.animation.AnimationGraph": {
+      "properties": {
+        "_layers": {
+          "type": "component"
+        },
+        "_variables": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.AnimationMask": {
+      "properties": {
+        "joints": {
+          "type": "component"
+        },
+        "_jointMasks": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.animation.AnimationBlend1D": {
+      "properties": {
+        "_items": {
+          "type": "component"
+        },
+        "param": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.AnimationBlend2DItem": {
+      "properties": {
+        "threshold": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      }
+    },
+    "cc.animation.AnimationBlend2D": {
+      "properties": {
+        "_items": {
+          "type": "component"
+        },
+        "paramX": {
+          "type": "component",
+          "default": null
+        },
+        "paramY": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.AnimationBlendDirectItem": {
+      "properties": {
+        "weight": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.animation.AnimationBlendDirect": {
+      "properties": {
+        "_items": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.AnimationBlendItem": {
+      "properties": {
+        "motion": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.animation.ClipMotion": {
+      "properties": {
+        "clip": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseGraphNodeShell": {
+      "properties": {
+        "_bindings": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.PoseGraphNodeInputBinding": {
+      "properties": {
+        "_inputPath": {
+          "type": "component"
+        },
+        "_producer": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.PoseGraphOutputNode": {
+      "properties": {
+        "pose": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseGraph": {
+      "properties": {
+        "_outputNode": {
+          "type": "component",
+          "default": null
+        },
+        "_nodes": {
+          "type": "component"
+        },
+        "_shells": {
+          "type": "component"
+        },
+        "_shellMap": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseNodeAdditivelyBlend": {
+      "properties": {
+        "basePose": {
+          "type": "component",
+          "default": null
+        },
+        "additivePose": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseNodeApplyTransform": {
+      "properties": {
+        "position": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "rotation": {
+          "type": "quat",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        },
+        "intensity": {
+          "type": "component",
+          "default": null
+        },
+        "transformSpace": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.PoseNodeBlendInProportion": {
+      "properties": {
+        "poses": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.PoseNodeBlendTwoPoseBase": {
+      "properties": {
+        "pose0": {
+          "type": "component",
+          "default": null
+        },
+        "pose1": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseNodeCopyTransform": {
+      "properties": {
+        "space": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.PoseNodeFilteringBlend": {
+      "properties": {
+        "mask": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.TargetSpecification": {
+      "properties": {
+        "targetPosition": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.PoseNodeTwoBoneIKSolver": {
+      "properties": {
+        "endEffectorTarget": {
+          "type": "component",
+          "default": null
+        },
+        "poleTarget": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseNodeModifyPoseBase": {
+      "properties": {
+        "pose": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseNodePlayMotion": {
+      "properties": {
+        "motion": {
+          "type": "component",
+          "default": null
+        },
+        "syncInfo": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseNodeSampleMotion": {
+      "properties": {
+        "motion": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PoseNodeStateMachine": {
+      "properties": {
+        "stateMachine": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.BinaryCondition": {
+      "properties": {
+        "operator": {
+          "type": "int",
+          "default": 0
+        },
+        "lhsBinding": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.UnaryCondition": {
+      "properties": {
+        "operator": {
+          "type": "int",
+          "default": 0
+        },
+        "operand": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.animation.Motion": {
+      "properties": {
+        "motion": {
+          "type": "component",
+          "default": null
+        },
+        "transitionInEventBinding": {
+          "type": "component",
+          "default": null
+        },
+        "transitionOutEventBinding": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.InteractiveState": {
+      "properties": {
+        "_components": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.animation.PlainVariable": {
+      "properties": {
+        "_type": {
+          "type": "component",
+          "default": 0
+        },
+        "_value": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.animation.QuatVariable": {
+      "properties": {
+        "_value": {
+          "type": "quat",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        }
+      }
+    },
+    "cc.animation.Vec3Variable": {
+      "properties": {
+        "_value": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.RealArrayTrack": {
+      "properties": {
+        "_channels": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.ColorTrack": {
+      "properties": {
+        "_channels": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.SizeTrack": {
+      "properties": {
+        "_channels": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.TrackPath": {
+      "properties": {
+        "_paths": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.TrackBinding": {
+      "properties": {
+        "path": {
+          "type": "component",
+          "default": null
+        },
+        "proxy": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Track": {
+      "properties": {
+        "_binding": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.Channel": {
+      "properties": {
+        "_curve": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.SingleChannelTrack": {
+      "properties": {
+        "_channel": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.UntypedTrack": {
+      "properties": {
+        "_channels": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.VectorTrack": {
+      "properties": {
+        "_channels": {
+          "type": "component"
+        },
+        "_nComponents": {
+          "type": "float",
+          "default": 4
+        }
+      }
+    },
+    "cc.EffectAsset": {
+      "properties": {
+        "techniques": {
+          "type": "component"
+        },
+        "shaders": {
+          "type": "component"
+        },
+        "combinations": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.JsonAsset": {
+      "properties": {
+        "json": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.Material": {
+      "properties": {
+        "_defines": {
+          "type": "component"
+        },
+        "_states": {
+          "type": "component"
+        },
+        "_props": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.SceneAsset": {
+      "properties": {
+        "scene": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.TextureCube": {
+      "properties": {
+        "_mipmapAtlas": {
+          "type": "component",
+          "default": null
+        },
+        "_mipmaps": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.KeySharedCurves": {
+      "properties": {
+        "_times": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.QuatKeyframeValue": {
+      "properties": {
+        "interpolationMode": {
+          "type": "int",
+          "default": 0
+        },
+        "value": {
+          "type": "component"
+        },
+        "easingMethod": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.QuatCurve": {
+      "properties": {
+        "preExtrapolation": {
+          "type": "int",
+          "default": 0
+        },
+        "postExtrapolation": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "dragonBones.ArmatureDisplay.DragonBoneSocket": {
+      "properties": {
+        "target": {
+          "type": "node",
+          "default": null
+        }
+      }
+    },
+    "dragonBones.ArmatureDisplay": {
+      "properties": {
+        "dragonAsset": {
+          "type": "component",
+          "default": null
+        },
+        "dragonAtlasAsset": {
+          "type": "component",
+          "default": null
+        },
+        "_defaultArmatureIndex": {
+          "type": "int"
+        },
+        "_animationIndex": {
+          "type": "int"
+        },
+        "sockets": {
+          "type": "component"
+        },
+        "customMaterial": {
+          "type": "asset"
+        },
+        "_defaultArmatureIndexValue": {
+          "type": "int",
+          "default": 0
+        },
+        "_animationIndexValue": {
+          "type": "int",
+          "default": 0
+        },
+        "_defaultCacheModeValue": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "dragonBones.DragonBonesAtlasAsset": {
+      "properties": {
+        "_texture": {
+          "type": "asset",
+          "default": null
+        },
+        "_textureAtlasData": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "BlendState": {
+      "properties": {
+        "blendColor": {
+          "type": "color",
+          "default": 0
+        },
+        "targets": {
+          "type": "component"
+        }
+      }
+    },
+    "PassStates": {
+      "properties": {
+        "rasterizerState": {
+          "type": "component",
+          "default": null
+        },
+        "depthStencilState": {
+          "type": "component",
+          "default": null
+        },
+        "blendState": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.Vertex": {
+      "properties": {
+        "position": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "normal": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "coefficients": {
+          "type": "vec3"
+        }
+      }
+    },
+    "cc.CircumSphere": {
+      "properties": {
+        "center": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.Tetrahedron": {
+      "properties": {
+        "matrix": {
+          "type": "object",
+          "default": null
+        },
+        "offset": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "sphere": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.LightProbeGroup": {
+      "properties": {
+        "probes": {
+          "type": "vec3"
+        },
+        "method": {
+          "type": "component",
+          "default": 0
+        },
+        "nProbesX": {
+          "type": "component",
+          "default": 3
+        },
+        "nProbesY": {
+          "type": "component",
+          "default": 3
+        },
+        "nProbesZ": {
+          "type": "component",
+          "default": 3
+        },
+        "_minPos": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_maxPos": {
+          "type": "vec3",
+          "default": {
+            "x": 5,
+            "y": 5,
+            "z": 5
+          }
+        }
+      }
+    },
+    "cc.LightProbesData": {
+      "properties": {
+        "_probes": {
+          "type": "component"
+        },
+        "_tetrahedrons": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Camera": {
+      "properties": {
+        "visibility": {
+          "type": "component"
+        },
+        "clearFlags": {
+          "type": "component",
+          "default": 0
+        },
+        "projection": {
+          "type": "component",
+          "default": 0
+        },
+        "fovAxis": {
+          "type": "component",
+          "default": 0
+        },
+        "aperture": {
+          "type": "component",
+          "default": 0
+        },
+        "shutter": {
+          "type": "component",
+          "default": 0
+        },
+        "iso": {
+          "type": "component",
+          "default": 0
+        },
+        "targetTexture": {
+          "type": "asset",
+          "default": null
+        },
+        "postProcess": {
+          "type": "component",
+          "default": null
+        },
+        "_color": {
+          "type": "color",
+          "default": {
+            "r": "#333333",
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        },
+        "_rect": {
+          "type": "rect",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          }
+        },
+        "_cameraType": {
+          "type": "int",
+          "default": 0
+        },
+        "_trackingType": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.PrefabLink": {
+      "properties": {
+        "prefab": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.Renderer": {
+      "properties": {
+        "sharedMaterials": {
+          "type": "asset"
+        }
+      }
+    },
+    "cc.ColorOvertimeModule": {
+      "properties": {
+        "color": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ForceOvertimeModule": {
+      "properties": {
+        "x": {
+          "type": "component",
+          "default": null
+        },
+        "y": {
+          "type": "component",
+          "default": null
+        },
+        "z": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.GradientRange": {
+      "properties": {
+        "mode": {
+          "type": "int"
+        }
+      }
+    },
+    "cc.LimitVelocityOvertimeModule": {
+      "properties": {
+        "limitX": {
+          "type": "component",
+          "default": null
+        },
+        "limitY": {
+          "type": "component",
+          "default": null
+        },
+        "limitZ": {
+          "type": "component",
+          "default": null
+        },
+        "limit": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.NoiseModule": {
+      "properties": {
+        "strengthX": {
+          "type": "component",
+          "default": 10
+        },
+        "strengthY": {
+          "type": "component",
+          "default": 10
+        },
+        "strengthZ": {
+          "type": "component",
+          "default": 10
+        },
+        "noiseSpeedX": {
+          "type": "component",
+          "default": 0
+        },
+        "noiseSpeedY": {
+          "type": "component",
+          "default": 0
+        },
+        "noiseSpeedZ": {
+          "type": "component",
+          "default": 0
+        },
+        "noiseFrequency": {
+          "type": "component",
+          "default": 1
+        },
+        "remapX": {
+          "type": "component",
+          "default": 0
+        },
+        "remapY": {
+          "type": "component",
+          "default": 0
+        },
+        "remapZ": {
+          "type": "component",
+          "default": 0
+        },
+        "octaves": {
+          "type": "component",
+          "default": 1
+        },
+        "octaveMultiplier": {
+          "type": "component",
+          "default": 0.5
+        },
+        "octaveScale": {
+          "type": "component",
+          "default": 2
+        }
+      }
+    },
+    "cc.RotationOvertimeModule": {
+      "properties": {
+        "x": {
+          "type": "component",
+          "default": null
+        },
+        "y": {
+          "type": "component",
+          "default": null
+        },
+        "z": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.SizeOvertimeModule": {
+      "properties": {
+        "size": {
+          "type": "component",
+          "default": null
+        },
+        "x": {
+          "type": "component",
+          "default": null
+        },
+        "y": {
+          "type": "component",
+          "default": null
+        },
+        "z": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.TextureAnimationModule": {
+      "properties": {
+        "mode": {
+          "type": "int"
+        },
+        "frameOverTime": {
+          "type": "component",
+          "default": null
+        },
+        "startFrame": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.VelocityOvertimeModule": {
+      "properties": {
+        "x": {
+          "type": "component",
+          "default": null
+        },
+        "y": {
+          "type": "component",
+          "default": null
+        },
+        "z": {
+          "type": "component",
+          "default": null
+        },
+        "speedModifier": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.Billboard": {
+      "properties": {
+        "texture": {
+          "type": "asset"
+        }
+      }
+    },
+    "cc.Burst": {
+      "properties": {
+        "count": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ShapeModule": {
+      "properties": {
+        "shapeType": {
+          "type": "component"
+        },
+        "arcSpeed": {
+          "type": "component",
+          "default": null
+        },
+        "boxThickness": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_position": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_rotation": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_scale": {
+          "type": "vec3",
+          "default": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    },
+    "cc.Line": {
+      "properties": {
+        "texture": {
+          "type": "asset"
+        },
+        "lineMaterial": {
+          "type": "asset"
+        },
+        "positions": {
+          "type": "vec3"
+        },
+        "width": {
+          "type": "component",
+          "default": null
+        },
+        "color": {
+          "type": "component",
+          "default": null
+        },
+        "tile": {
+          "type": "vec2",
+          "default": {
+            "x": 1,
+            "y": 1
+          }
+        },
+        "offset": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "_material": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.ParticleSystem": {
+      "properties": {
+        "simulationSpace": {
+          "type": "component",
+          "default": 0
+        },
+        "cullingMode": {
+          "type": "component",
+          "default": 0
+        },
+        "aabbHalfX": {
+          "type": "component",
+          "default": 0
+        },
+        "aabbHalfY": {
+          "type": "component",
+          "default": 0
+        },
+        "aabbHalfZ": {
+          "type": "component",
+          "default": 0
+        },
+        "colorOverLifetimeModule": {
+          "type": "component"
+        },
+        "shapeModule": {
+          "type": "component"
+        },
+        "sizeOvertimeModule": {
+          "type": "component"
+        },
+        "velocityOvertimeModule": {
+          "type": "component"
+        },
+        "forceOvertimeModule": {
+          "type": "component"
+        },
+        "limitVelocityOvertimeModule": {
+          "type": "component"
+        },
+        "rotationOvertimeModule": {
+          "type": "component"
+        },
+        "textureAnimationModule": {
+          "type": "component"
+        },
+        "noiseModule": {
+          "type": "component"
+        },
+        "trailModule": {
+          "type": "component"
+        },
+        "startColor": {
+          "type": "component",
+          "default": null
+        },
+        "startSizeY": {
+          "type": "component",
+          "default": null
+        },
+        "startSizeZ": {
+          "type": "component",
+          "default": null
+        },
+        "startSpeed": {
+          "type": "component",
+          "default": null
+        },
+        "startRotationX": {
+          "type": "component",
+          "default": null
+        },
+        "startRotationY": {
+          "type": "component",
+          "default": null
+        },
+        "startDelay": {
+          "type": "component",
+          "default": null
+        },
+        "startLifetime": {
+          "type": "component",
+          "default": null
+        },
+        "gravityModifier": {
+          "type": "component",
+          "default": null
+        },
+        "rateOverTime": {
+          "type": "component",
+          "default": null
+        },
+        "rateOverDistance": {
+          "type": "component",
+          "default": null
+        },
+        "bursts": {
+          "type": "component"
+        },
+        "renderer": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ParticleSystemRenderer": {
+      "properties": {
+        "renderMode": {
+          "type": "component",
+          "default": 0
+        },
+        "mesh": {
+          "type": "asset",
+          "default": null
+        },
+        "particleMaterial": {
+          "type": "asset"
+        },
+        "cpuMaterial": {
+          "type": "asset",
+          "default": null
+        },
+        "gpuMaterial": {
+          "type": "asset",
+          "default": null
+        },
+        "trailMaterial": {
+          "type": "asset"
+        },
+        "alignSpace": {
+          "type": "component",
+          "default": 0
+        },
+        "_mainTexture": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.TrailModule": {
+      "properties": {
+        "space": {
+          "type": "component"
+        },
+        "lifeTime": {
+          "type": "component",
+          "default": null
+        },
+        "widthRatio": {
+          "type": "component",
+          "default": null
+        },
+        "colorOverTrail": {
+          "type": "component",
+          "default": null
+        },
+        "colorOvertime": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.MotionStreak": {
+      "properties": {
+        "texture": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.ParticleAsset": {
+      "properties": {
+        "spriteFrame": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.ParticleSystem2D": {
+      "properties": {
+        "file": {
+          "type": "asset",
+          "default": null
+        },
+        "spriteFrame": {
+          "type": "asset",
+          "default": null
+        },
+        "positionType": {
+          "type": "component",
+          "default": 0
+        },
+        "_startColor": {
+          "type": "color",
+          "default": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        },
+        "_startColorVar": {
+          "type": "color",
+          "default": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        },
+        "_endColor": {
+          "type": "color",
+          "default": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        },
+        "_endColorVar": {
+          "type": "color",
+          "default": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        }
+      }
+    },
+    "cc.PhysicsMaterial": {
+      "properties": {
+        "friction": {
+          "type": "component",
+          "default": 0.6
+        },
+        "rollingFriction": {
+          "type": "component",
+          "default": 0
+        },
+        "spinningFriction": {
+          "type": "component",
+          "default": 0
+        },
+        "restitution": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.BoxCharacterController": {
+      "properties": {
+        "halfHeight": {
+          "type": "component",
+          "default": 0.5
+        },
+        "halfSideExtent": {
+          "type": "component",
+          "default": 0.5
+        },
+        "halfForwardExtent": {
+          "type": "component",
+          "default": 0.5
+        }
+      }
+    },
+    "cc.CapsuleCharacterController": {
+      "properties": {
+        "radius": {
+          "type": "component",
+          "default": 0.5
+        },
+        "height": {
+          "type": "component",
+          "default": 1
+        }
+      }
+    },
+    "cc.CharacterController": {
+      "properties": {
+        "group": {
+          "type": "component",
+          "default": 0
+        },
+        "minMoveDistance": {
+          "type": "component",
+          "default": 0.001
+        },
+        "stepOffset": {
+          "type": "component",
+          "default": 0.5
+        },
+        "slopeLimit": {
+          "type": "component",
+          "default": 45
+        },
+        "skinWidth": {
+          "type": "component",
+          "default": 0.01
+        },
+        "center": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.BoxCollider": {
+      "properties": {
+        "size": {
+          "type": "vec3",
+          "default": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    },
+    "cc.CapsuleCollider": {
+      "properties": {
+        "direction": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.Collider": {
+      "properties": {
+        "attachedRigidBody": {
+          "type": "component"
+        },
+        "sharedMaterial": {
+          "type": "component"
+        },
+        "center": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.ConeCollider": {
+      "properties": {
+        "direction": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.CylinderCollider": {
+      "properties": {
+        "direction": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.MeshCollider": {
+      "properties": {
+        "mesh": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.PlaneCollider": {
+      "properties": {
+        "normal": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.SimplexCollider": {
+      "properties": {
+        "shapeType": {
+          "type": "int",
+          "default": 0
+        },
+        "_vertices": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.TerrainCollider": {
+      "properties": {
+        "terrain": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ConstantForce": {
+      "properties": {
+        "_force": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_localForce": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_torque": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_localTorque": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.LinearLimitSettings": {
+      "properties": {
+        "xMotion": {
+          "type": "int",
+          "default": 0
+        },
+        "yMotion": {
+          "type": "int",
+          "default": 0
+        },
+        "zMotion": {
+          "type": "int",
+          "default": 0
+        },
+        "upper": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "lower": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "restitution": {
+          "type": "component"
+        },
+        "enableSoftConstraint": {
+          "type": "component",
+          "default": false
+        },
+        "stiffness": {
+          "type": "component",
+          "default": 0
+        },
+        "damping": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.AngularLimitSettings": {
+      "properties": {
+        "twistMotion": {
+          "type": "int",
+          "default": 0
+        },
+        "swingMotion1": {
+          "type": "int"
+        },
+        "swingMotion2": {
+          "type": "int"
+        },
+        "twistExtent": {
+          "type": "component",
+          "default": 0
+        },
+        "swingExtent1": {
+          "type": "component",
+          "default": 0
+        },
+        "swingExtent2": {
+          "type": "component",
+          "default": 0
+        },
+        "twistRestitution": {
+          "type": "component"
+        },
+        "swingRestitution": {
+          "type": "component"
+        },
+        "enableSoftConstraintTwist": {
+          "type": "component",
+          "default": false
+        },
+        "twistStiffness": {
+          "type": "component",
+          "default": 0
+        },
+        "twistDamping": {
+          "type": "component",
+          "default": 0
+        },
+        "enableSoftConstraintSwing": {
+          "type": "component",
+          "default": false
+        },
+        "swingStiffness": {
+          "type": "component",
+          "default": 0
+        },
+        "swingDamping": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.LinearDriverSettings": {
+      "properties": {
+        "xDrive": {
+          "type": "int",
+          "default": 0
+        },
+        "yDrive": {
+          "type": "int",
+          "default": 0
+        },
+        "zDrive": {
+          "type": "int",
+          "default": 0
+        },
+        "targetPosition": {
+          "type": "vec3"
+        },
+        "targetVelocity": {
+          "type": "vec3"
+        },
+        "strength": {
+          "type": "component",
+          "default": 0
+        },
+        "_target": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_velocity": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.AngularDriverSettings": {
+      "properties": {
+        "twistDrive": {
+          "type": "int",
+          "default": 0
+        },
+        "swingDrive1": {
+          "type": "int",
+          "default": 0
+        },
+        "swingDrive2": {
+          "type": "int",
+          "default": 0
+        },
+        "targetOrientation": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "targetVelocity": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "strength": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.ConfigurableConstraint": {
+      "properties": {
+        "axis": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          }
+        },
+        "secondaryAxis": {
+          "type": "vec3",
+          "default": {
+            "x": 1,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "pivotA": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "pivotB": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "autoPivotB": {
+          "type": "component",
+          "default": false
+        },
+        "breakForce": {
+          "type": "component",
+          "default": 100000000
+        },
+        "breakTorque": {
+          "type": "component",
+          "default": 100000000
+        },
+        "linearLimitSettings": {
+          "type": "component"
+        },
+        "angularLimitSettings": {
+          "type": "component"
+        },
+        "linearDriverSettings": {
+          "type": "component"
+        },
+        "angularDriverSettings": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Constraint": {
+      "properties": {
+        "attachedBody": {
+          "type": "component"
+        },
+        "connectedBody": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.FixedConstraint": {
+      "properties": {
+        "breakForce": {
+          "type": "component",
+          "default": 100000000
+        },
+        "breakTorque": {
+          "type": "component",
+          "default": 100000000
+        }
+      }
+    },
+    "cc.HingeLimitData": {
+      "properties": {
+        "enabled": {
+          "type": "component"
+        },
+        "upperLimit": {
+          "type": "component",
+          "default": 0
+        },
+        "lowerLimit": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.HingeMotorData": {
+      "properties": {
+        "enabled": {
+          "type": "component"
+        },
+        "motorVelocity": {
+          "type": "component",
+          "default": 0
+        },
+        "motorForceLimit": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.HingeConstraint": {
+      "properties": {
+        "pivotA": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "pivotB": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "axis": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "limitEnabled": {
+          "type": "component"
+        },
+        "upperLimit": {
+          "type": "component"
+        },
+        "lowerLimit": {
+          "type": "component"
+        },
+        "motorEnabled": {
+          "type": "component"
+        },
+        "motorVelocity": {
+          "type": "component"
+        },
+        "motorForceLimit": {
+          "type": "component"
+        },
+        "_limitData": {
+          "type": "component",
+          "default": null
+        },
+        "_motorData": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.PointToPointConstraint": {
+      "properties": {
+        "pivotA": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "pivotB": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.RigidBody": {
+      "properties": {
+        "group": {
+          "type": "component",
+          "default": 0
+        },
+        "type": {
+          "type": "int",
+          "default": 0
+        },
+        "_linearFactor": {
+          "type": "vec3",
+          "default": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "_angularFactor": {
+          "type": "vec3",
+          "default": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+      }
+    },
+    "cc.BoxCollider2D": {
+      "properties": {
+        "size": {
+          "type": "size",
+          "default": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      }
+    },
+    "cc.CircleCollider2D": {
+      "properties": {
+        "radius": {
+          "type": "component",
+          "default": 1
+        }
+      }
+    },
+    "cc.Collider2D": {
+      "properties": {
+        "group": {
+          "type": "int",
+          "default": 0
+        },
+        "density": {
+          "type": "component",
+          "default": 1
+        },
+        "sensor": {
+          "type": "component",
+          "default": false
+        },
+        "friction": {
+          "type": "component",
+          "default": 0.2
+        },
+        "restitution": {
+          "type": "component",
+          "default": 0
+        },
+        "offset": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      }
+    },
+    "cc.PolygonCollider2D": {
+      "properties": {
+        "points": {
+          "type": "vec2"
+        }
+      }
+    },
+    "cc.DistanceJoint2D": {
+      "properties": {
+        "maxLength": {
+          "type": "component",
+          "default": 5
+        },
+        "autoCalcDistance": {
+          "type": "component",
+          "default": true
+        }
+      }
+    },
+    "cc.FixedJoint2D": {
+      "properties": {
+        "frequency": {
+          "type": "component",
+          "default": 0.7
+        },
+        "dampingRatio": {
+          "type": "component",
+          "default": 0.5
+        }
+      }
+    },
+    "cc.HingeJoint2D": {
+      "properties": {
+        "enableLimit": {
+          "type": "component",
+          "default": false
+        },
+        "lowerAngle": {
+          "type": "component",
+          "default": 0
+        },
+        "upperAngle": {
+          "type": "component",
+          "default": 0
+        },
+        "enableMotor": {
+          "type": "component",
+          "default": false
+        },
+        "maxMotorTorque": {
+          "type": "component",
+          "default": 1000
+        },
+        "motorSpeed": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.Joint2D": {
+      "properties": {
+        "anchor": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "connectedAnchor": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "connectedBody": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.MouseJoint2D": {
+      "properties": {
+        "frequency": {
+          "type": "component",
+          "default": 5
+        },
+        "dampingRatio": {
+          "type": "component",
+          "default": 0.7
+        },
+        "maxForce": {
+          "type": "component",
+          "default": 1000
+        }
+      }
+    },
+    "cc.RelativeJoint2D": {
+      "properties": {
+        "maxForce": {
+          "type": "component",
+          "default": 5
+        },
+        "maxTorque": {
+          "type": "component",
+          "default": 0.7
+        },
+        "correctionFactor": {
+          "type": "component",
+          "default": 0.3
+        },
+        "linearOffset": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "angularOffset": {
+          "type": "component",
+          "default": 0
+        },
+        "autoCalcOffset": {
+          "type": "component",
+          "default": true
+        }
+      }
+    },
+    "cc.SliderJoint2D": {
+      "properties": {
+        "angle": {
+          "type": "component",
+          "default": 0
+        },
+        "autoCalcAngle": {
+          "type": "component",
+          "default": true
+        },
+        "enableMotor": {
+          "type": "component",
+          "default": false
+        },
+        "maxMotorForce": {
+          "type": "component",
+          "default": 1000
+        },
+        "motorSpeed": {
+          "type": "component",
+          "default": 1000
+        },
+        "enableLimit": {
+          "type": "component",
+          "default": false
+        },
+        "lowerLimit": {
+          "type": "component",
+          "default": 0
+        },
+        "upperLimit": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "cc.SpringJoint2D": {
+      "properties": {
+        "frequency": {
+          "type": "component",
+          "default": 5
+        },
+        "dampingRatio": {
+          "type": "component",
+          "default": 0.7
+        },
+        "distance": {
+          "type": "component",
+          "default": 10
+        },
+        "autoCalcDistance": {
+          "type": "component",
+          "default": true
+        }
+      }
+    },
+    "cc.WheelJoint2D": {
+      "properties": {
+        "angle": {
+          "type": "component",
+          "default": 90
+        },
+        "enableMotor": {
+          "type": "component",
+          "default": false
+        },
+        "maxMotorTorque": {
+          "type": "component",
+          "default": 1000
+        },
+        "motorSpeed": {
+          "type": "component",
+          "default": 0
+        },
+        "frequency": {
+          "type": "component",
+          "default": 5
+        },
+        "dampingRatio": {
+          "type": "component",
+          "default": 0.7
+        }
+      }
+    },
+    "cc.RigidBody2D": {
+      "properties": {
+        "group": {
+          "type": "int",
+          "default": 0
+        },
+        "type": {
+          "type": "int",
+          "default": 0
+        },
+        "allowSleep": {
+          "type": "component",
+          "default": true
+        },
+        "gravityScale": {
+          "type": "component",
+          "default": 1
+        },
+        "linearDamping": {
+          "type": "component",
+          "default": 0
+        },
+        "angularDamping": {
+          "type": "component",
+          "default": 0
+        },
+        "linearVelocity": {
+          "type": "vec2",
+          "default": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        "angularVelocity": {
+          "type": "component",
+          "default": 0
+        },
+        "fixedRotation": {
+          "type": "component",
+          "default": false
+        }
+      }
+    },
+    "cc.Primitive": {
+      "properties": {
+        "info": {
+          "type": "component"
+        }
+      }
+    },
+    "BloomStage": {
+      "properties": {
+        "_bloomMaterial": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "DeferredPipeline": {
+      "properties": {
+        "renderTextures": {
+          "type": "component"
+        }
+      }
+    },
+    "GbufferStage": {
+      "properties": {
+        "renderQueues": {
+          "type": "component"
+        }
+      }
+    },
+    "LightingStage": {
+      "properties": {
+        "_deferredMaterial": {
+          "type": "asset",
+          "default": null
+        },
+        "renderQueues": {
+          "type": "component"
+        }
+      }
+    },
+    "PostProcessStage": {
+      "properties": {
+        "_postProcessMaterial": {
+          "type": "asset",
+          "default": null
+        },
+        "renderQueues": {
+          "type": "component"
+        }
+      }
+    },
+    "ForwardPipeline": {
+      "properties": {
+        "renderTextures": {
+          "type": "component"
+        }
+      }
+    },
+    "ForwardStage": {
+      "properties": {
+        "renderQueues": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.BlitScreenMaterial": {
+      "properties": {
+        "_material": {
+          "type": "asset"
+        }
+      }
+    },
+    "cc.BlitScreen": {
+      "properties": {
+        "_activeMaterials": {
+          "type": "asset"
+        },
+        "_materials": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Bloom": {
+      "properties": {
+        "_useHdrIlluminance": {
+          "type": "bool",
+          "default": false
+        }
+      }
+    },
+    "cc.ColorGrading": {
+      "properties": {
+        "_colorGradingMap": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.FSR": {
+      "properties": {
+        "sharpness": {
+          "type": "component",
+          "default": 0.8
+        }
+      }
+    },
+    "RenderFlow": {
+      "properties": {
+        "_stages": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.RenderPipeline": {
+      "properties": {
+        "_flows": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.ClickEvent": {
+      "properties": {
+        "target": {
+          "type": "node",
+          "default": null
+        }
+      }
+    },
+    "cc.Component": {
+      "properties": {
+        "__scriptAsset": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Node": {
+      "properties": {
+        "_components": {
+          "type": "component"
+        },
+        "_prefab": {
+          "type": "component",
+          "default": null
+        },
+        "_lpos": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_lrot": {
+          "type": "quat",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        },
+        "_lscale": {
+          "type": "vec3",
+          "default": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "_euler": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.TargetOverrideInfo": {
+      "properties": {
+        "source": {
+          "type": "component",
+          "default": null
+        },
+        "sourceInfo": {
+          "type": "component",
+          "default": null
+        },
+        "target": {
+          "type": "node",
+          "default": null
+        },
+        "targetInfo": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "CCPropertyOverrideInfo": {
+      "properties": {
+        "targetInfo": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.MountedChildrenInfo": {
+      "properties": {
+        "targetInfo": {
+          "type": "component",
+          "default": null
+        },
+        "nodes": {
+          "type": "node"
+        }
+      }
+    },
+    "cc.MountedComponentsInfo": {
+      "properties": {
+        "targetInfo": {
+          "type": "component",
+          "default": null
+        },
+        "components": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.PrefabInstance": {
+      "properties": {
+        "prefabRootNode": {
+          "type": "node"
+        },
+        "mountedChildren": {
+          "type": "component"
+        },
+        "mountedComponents": {
+          "type": "component"
+        },
+        "propertyOverrides": {
+          "type": "component"
+        },
+        "removedComponents": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.PrefabInfo": {
+      "properties": {
+        "root": {
+          "type": "node"
+        },
+        "asset": {
+          "type": "asset"
+        },
+        "instance": {
+          "type": "component"
+        },
+        "targetOverrides": {
+          "type": "component"
+        },
+        "nestedPrefabInstanceRoots": {
+          "type": "node"
+        }
+      }
+    },
+    "cc.AmbientInfo": {
+      "properties": {
+        "_skyColorHDR": {
+          "type": "vec4",
+          "default": {
+            "x": 0.2,
+            "y": 0.5,
+            "z": 0.8,
+            "w": 1
+          }
+        },
+        "_groundAlbedoHDR": {
+          "type": "vec4",
+          "default": {
+            "x": 0.2,
+            "y": 0.2,
+            "z": 0.2,
+            "w": 1
+          }
+        },
+        "_skyColorLDR": {
+          "type": "vec4",
+          "default": {
+            "x": 0.2,
+            "y": 0.5,
+            "z": 0.8,
+            "w": 1
+          }
+        },
+        "_groundAlbedoLDR": {
+          "type": "vec4",
+          "default": {
+            "x": 0.2,
+            "y": 0.2,
+            "z": 0.2,
+            "w": 1
+          }
+        }
+      }
+    },
+    "cc.SkyboxInfo": {
+      "properties": {
+        "_envmapHDR": {
+          "type": "asset",
+          "default": null
+        },
+        "_envmapLDR": {
+          "type": "asset",
+          "default": null
+        },
+        "_diffuseMapHDR": {
+          "type": "asset",
+          "default": null
+        },
+        "_diffuseMapLDR": {
+          "type": "asset",
+          "default": null
+        },
+        "_editableMaterial": {
+          "type": "asset",
+          "default": null
+        },
+        "_reflectionHDR": {
+          "type": "asset",
+          "default": null
+        },
+        "_reflectionLDR": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.FogInfo": {
+      "properties": {
+        "type": {
+          "type": "component",
+          "default": 0
+        },
+        "fogDensity": {
+          "type": "component",
+          "default": 0.3
+        },
+        "fogStart": {
+          "type": "component",
+          "default": 0.5
+        },
+        "fogEnd": {
+          "type": "component",
+          "default": 300
+        },
+        "fogAtten": {
+          "type": "component",
+          "default": 5
+        },
+        "fogTop": {
+          "type": "component",
+          "default": 1.5
+        },
+        "fogRange": {
+          "type": "component",
+          "default": 1.2
+        },
+        "_fogColor": {
+          "type": "color",
+          "default": {
+            "r": "#C8C8C8",
+            "g": 255,
+            "b": 255,
+            "a": 255
+          }
+        }
+      }
+    },
+    "cc.ShadowsInfo": {
+      "properties": {
+        "_normal": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          }
+        },
+        "_shadowColor": {
+          "type": "color",
+          "default": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 76
+          }
+        },
+        "_size": {
+          "type": "vec2",
+          "default": {
+            "x": 1024,
+            "y": 1024
+          }
+        }
+      }
+    },
+    "cc.OctreeInfo": {
+      "properties": {
+        "_minPos": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "_maxPos": {
+          "type": "vec3",
+          "default": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      }
+    },
+    "cc.LightProbeInfo": {
+      "properties": {
+        "_data": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.SceneGlobals": {
+      "properties": {
+        "skybox": {
+          "type": "component",
+          "default": null
+        },
+        "ambient": {
+          "type": "component",
+          "default": null
+        },
+        "shadows": {
+          "type": "component",
+          "default": null
+        },
+        "fog": {
+          "type": "component",
+          "default": null
+        },
+        "octree": {
+          "type": "component",
+          "default": null
+        },
+        "skin": {
+          "type": "component",
+          "default": null
+        },
+        "lightProbeInfo": {
+          "type": "component",
+          "default": null
+        },
+        "postSettings": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.Scene": {
+      "properties": {
+        "_globals": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.Sorting": {
+      "properties": {
+        "sortingLayer": {
+          "type": "component",
+          "default": 0
+        }
+      }
+    },
+    "sp.SkeletonData": {
+      "properties": {
+        "textures": {
+          "type": "asset"
+        }
+      }
+    },
+    "sp.Skeleton.SpineSocket": {
+      "properties": {
+        "target": {
+          "type": "node",
+          "default": null
+        }
+      }
+    },
+    "sp.Skeleton": {
+      "properties": {
+        "skeletonData": {
+          "type": "component",
+          "default": null
+        },
+        "_defaultSkinIndex": {
+          "type": "int"
+        },
+        "_animationIndex": {
+          "type": "int"
+        },
+        "defaultCacheMode": {
+          "type": "int"
+        },
+        "sockets": {
+          "type": "component"
+        },
+        "customMaterial": {
+          "type": "asset"
+        },
+        "_preCacheMode": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.TerrainLayerInfo": {
+      "properties": {
+        "detailMap": {
+          "type": "asset",
+          "default": null
+        },
+        "normalMap": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.TerrainAsset": {
+      "properties": {
+        "_layerInfos": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.TerrainLayer": {
+      "properties": {
+        "detailMap": {
+          "type": "asset",
+          "default": null
+        },
+        "normalMap": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.TerrainBlockLightmapInfo": {
+      "properties": {
+        "texture": {
+          "type": "asset",
+          "default": null
+        }
+      }
+    },
+    "cc.Terrain": {
+      "properties": {
+        "info": {
+          "type": "component"
+        },
+        "__asset": {
+          "type": "component",
+          "default": null
+        },
+        "_effectAsset": {
+          "type": "asset",
+          "default": null
+        },
+        "_lightmapInfos": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.TiledMapAsset": {
+      "properties": {
+        "tsxFiles": {
+          "type": "asset"
+        },
+        "spriteFrames": {
+          "type": "asset"
+        },
+        "imageLayerSpriteFrame": {
+          "type": "asset"
+        },
+        "spriteFrameSizes": {
+          "type": "size"
+        }
+      }
+    },
+    "cc.TiledMap": {
+      "properties": {
+        "tmxAsset": {
+          "type": "component"
+        },
+        "_tmxFile": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.TiledObjectGroup": {
+      "properties": {
+        "premultiplyAlpha": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.TiledTile": {
+      "properties": {
+        "x": {
+          "type": "component"
+        },
+        "y": {
+          "type": "component"
+        },
+        "grid": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Button": {
+      "properties": {
+        "target": {
+          "type": "node",
+          "default": null
+        },
+        "transition": {
+          "type": "int",
+          "default": 0
+        },
+        "normalSprite": {
+          "type": "asset",
+          "default": null
+        },
+        "pressedSprite": {
+          "type": "asset",
+          "default": null
+        },
+        "hoverSprite": {
+          "type": "asset",
+          "default": null
+        },
+        "disabledSprite": {
+          "type": "asset",
+          "default": null
+        },
+        "clickEvents": {
+          "type": "component"
+        },
+        "_normalColor": {
+          "type": "color"
+        },
+        "_hoverColor": {
+          "type": "color",
+          "default": {
+            "r": 211,
+            "g": 211,
+            "b": 211,
+            "a": 255
+          }
+        },
+        "_pressedColor": {
+          "type": "color"
+        },
+        "_disabledColor": {
+          "type": "color",
+          "default": {
+            "r": 124,
+            "g": 124,
+            "b": 124,
+            "a": 255
+          }
+        }
+      }
+    },
+    "cc.EditBox": {
+      "properties": {
+        "textLabel": {
+          "type": "component",
+          "default": null
+        },
+        "placeholderLabel": {
+          "type": "component",
+          "default": null
+        },
+        "backgroundImage": {
+          "type": "asset",
+          "default": null
+        },
+        "inputFlag": {
+          "type": "int",
+          "default": 0
+        },
+        "inputMode": {
+          "type": "int",
+          "default": 0
+        },
+        "returnType": {
+          "type": "int",
+          "default": 0
+        },
+        "editingDidBegan": {
+          "type": "component"
+        },
+        "textChanged": {
+          "type": "component"
+        },
+        "editingDidEnded": {
+          "type": "component"
+        },
+        "editingReturn": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Layout": {
+      "properties": {
+        "type": {
+          "type": "int"
+        },
+        "resizeMode": {
+          "type": "int",
+          "default": 0
+        },
+        "startAxis": {
+          "type": "int",
+          "default": 0
+        },
+        "verticalDirection": {
+          "type": "int",
+          "default": 0
+        },
+        "horizontalDirection": {
+          "type": "int",
+          "default": 0
+        },
+        "constraint": {
+          "type": "int",
+          "default": 0
+        },
+        "_cellSize": {
+          "type": "size",
+          "default": {
+            "width": 40,
+            "height": 40
+          }
+        }
+      }
+    },
+    "cc.PageViewIndicator": {
+      "properties": {
+        "spriteFrame": {
+          "type": "asset",
+          "default": null
+        },
+        "direction": {
+          "type": "int",
+          "default": 0
+        },
+        "cellSize": {
+          "type": "size",
+          "default": {
+            "width": 20,
+            "height": 20
+          }
+        }
+      }
+    },
+    "cc.PageView": {
+      "properties": {
+        "sizeMode": {
+          "type": "int",
+          "default": 0
+        },
+        "direction": {
+          "type": "int",
+          "default": 0
+        },
+        "indicator": {
+          "type": "component",
+          "default": null
+        },
+        "verticalScrollBar": {
+          "type": "component"
+        },
+        "horizontalScrollBar": {
+          "type": "component"
+        },
+        "scrollEvents": {
+          "type": "component"
+        },
+        "pageEvents": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.ProgressBar": {
+      "properties": {
+        "barSprite": {
+          "type": "component",
+          "default": null
+        },
+        "mode": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.ScrollBar": {
+      "properties": {
+        "handle": {
+          "type": "component",
+          "default": null
+        },
+        "direction": {
+          "type": "int",
+          "default": 0
+        },
+        "_scrollView": {
+          "type": "component",
+          "default": null
+        }
+      }
+    },
+    "cc.ScrollView": {
+      "properties": {
+        "content": {
+          "type": "node",
+          "default": null
+        },
+        "horizontalScrollBar": {
+          "type": "component",
+          "default": null
+        },
+        "verticalScrollBar": {
+          "type": "component",
+          "default": null
+        },
+        "scrollEvents": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Slider": {
+      "properties": {
+        "handle": {
+          "type": "component",
+          "default": null
+        },
+        "direction": {
+          "type": "int",
+          "default": 0
+        },
+        "slideEvents": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.SubContextView": {
+      "properties": {
+        "_designResolutionSize": {
+          "type": "size",
+          "default": {
+            "width": 640,
+            "height": 960
+          }
+        }
+      }
+    },
+    "cc.ToggleContainer": {
+      "properties": {
+        "checkEvents": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Toggle": {
+      "properties": {
+        "checkMark": {
+          "type": "component",
+          "default": null
+        },
+        "checkEvents": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.UICoordinateTracker": {
+      "properties": {
+        "target": {
+          "type": "node",
+          "default": null
+        },
+        "camera": {
+          "type": "component",
+          "default": null
+        },
+        "syncEvents": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.Widget": {
+      "properties": {
+        "target": {
+          "type": "node",
+          "default": null
+        },
+        "alignMode": {
+          "type": "int",
+          "default": 0
+        }
+      }
+    },
+    "cc.VideoPlayer": {
+      "properties": {
+        "resourceType": {
+          "type": "component",
+          "default": 0
+        },
+        "clip": {
+          "type": "asset",
+          "default": null
+        },
+        "videoPlayerEvent": {
+          "type": "component"
+        }
+      }
+    },
+    "cc.WebView": {
+      "properties": {
+        "webviewEvents": {
+          "type": "component"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"serialize.d.ts","sourceRoot":"","sources":["../../../src/translation/assembler/serialize.ts"],"names":[],"mappings":"AAQA,OAAO,EACL,WAAW,EACX,UAAU,EAEV,WAAW,EAMZ,MAAM,yBAAyB,CAAC;AACjC,OAAO,EAAE,gBAAgB,EAAE,MAAM,+BAA+B,CAAC;AAEjE,wBAAgB,SAAS,CACvB,IAAI,EAAE,UAAU,EAChB,IAAI,EAAE,WAAW,EACjB,OAAO,EAAE,gBAAgB,EACzB,QAAQ,GAAE,WAA2B,GACpC,UAAU,CAWZ"}

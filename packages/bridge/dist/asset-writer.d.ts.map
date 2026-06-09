@@ -1,0 +1,1 @@
+{"version":3,"file":"asset-writer.d.ts","sourceRoot":"","sources":["../src/asset-writer.ts"],"names":[],"mappings":"AAaA,qBAAa,WAAW;IACtB,OAAO,CAAC,YAAY,CAAS;gBAEjB,WAAW,EAAE,MAAM;IAIzB,UAAU,CAAC,OAAO,EAAE,MAAM,CAAC,MAAM,EAAE,OAAO,CAAC,GAAG,OAAO,CAAC,OAAO,CAAC;IA6EpE,OAAO,CAAC,gBAAgB;IAiDxB,OAAO,CAAC,aAAa;IAarB,OAAO,CAAC,aAAa;CA+BtB"}

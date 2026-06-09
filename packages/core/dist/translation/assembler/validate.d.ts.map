@@ -1,0 +1,1 @@
+{"version":3,"file":"validate.d.ts","sourceRoot":"","sources":["../../../src/translation/assembler/validate.ts"],"names":[],"mappings":"AAKA,OAAO,EAAE,WAAW,EAAY,MAAM,yBAAyB,CAAC;AAEhE,MAAM,WAAW,eAAe;IAC9B,KAAK,EAAE,MAAM,CAAC;IACd,SAAS,EAAE,MAAM,CAAC;CACnB;AAED,wBAAgB,QAAQ,CAAC,IAAI,EAAE,WAAW,GAAG,eAAe,GAAG,IAAI,CAsDlE"}

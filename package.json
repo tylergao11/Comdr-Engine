@@ -1,0 +1,34 @@
+{
+  "name": "comdr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Comdr — Cocos Creator 资源层 AI 操作体 (TypeScript 重写)",
+  "workspaces": [
+    "packages/core",
+    "packages/mcp-server",
+    "packages/bridge",
+    "packages/cli"
+  ],
+  "scripts": {
+    "build": "tsc --build tsconfig.json && node scripts/copy-assets.js",
+    "build:watch": "tsc --build --watch tsconfig.json",
+    "dev": "tsx packages/mcp-server/src/index.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "sync-bridge": "tsx scripts/sync-bridge.ts",
+    "sync-bridge:project": "tsx scripts/sync-bridge.ts --project",
+    "build:overlay": "cd packages/overlay && npx tauri build",
+    "clean": "node scripts/clean.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "pdf-parse": "^2.4.5",
+    "pdf2json": "^4.0.3",
+    "puppeteer-core": "^25.1.0",
+    "sharp": "^0.34.5"
+  }
+}

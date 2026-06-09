@@ -1,0 +1,63 @@
+export { VERSION } from './version';
+/** UUID 展示前缀长度（如 abc12345）。36 字符的 UUID 没必要全展示，前 8 位已足够区分。 */
+export declare const DISPLAY_UUID_PREFIX = 8;
+/** Overlay UI 名字展示截断。浮层卡片宽度有限，24 字符刚好不换行。 */
+export declare const DISPLAY_NAME_MAX = 24;
+/** ask() 问题在状态摘要中的截断。80 字符足够概括问题，再多应该在下一轮对话中展开。 */
+export declare const DISPLAY_ASK_MAX = 80;
+/** Diff 单属性值截断。颜色、位置等典型值都在 40 字符内，超长文本（如 Label.string）会被截掉多余部分。 */
+export declare const DIFF_VALUE_MAX = 40;
+/** Diff 对象序列化截断。cc.Vec2 约 20 字符，cc.Color 约 60 字符，60 覆盖常见值类型。 */
+export declare const DIFF_OBJ_MAX = 60;
+/** Bridge 心跳中的脚本摘要条目上限。只给 Overlay 仪表盘看一眼。 */
+export declare const LIST_HEARTBEAT_SCRIPTS = 50;
+/** 回滚状态中展示的控制台 warn/error 条数。显示最近 5 条，不需要完整日志。 */
+export declare const LIST_CONSOLE_DISPLAY = 5;
+/** 回滚时从 Bridge 拉取的控制台日志条数。50 条覆盖操作前后的上下文。 */
+export declare const LIST_CONSOLE_PULL = 50;
+/** 控制台日志内存缓冲区最大条数。500 条在内存中可忽略不计（<1MB），同时保留调试上下文。 */
+export declare const BUFFER_CONSOLE_LOGS = 500;
+/** 编辑历史最大深度。50 次操作覆盖典型编辑会话，超过则丢弃最早记录。 */
+export declare const BUFFER_EDIT_HISTORY = 50;
+/** 事件 data 字符串截断。Overlay 卡片只能显示 ~80 字符，200 已经给够。 */
+export declare const EVENT_STRING_MAX = 200;
+/** 事件 data 数组预览项数。显示前 3 项让用户知道"有哪些东西"。 */
+export declare const EVENT_ARRAY_PREVIEW = 3;
+/** 事件 data 数组透传阈值。≤10 项的数组整体展示，不裁剪。 */
+export declare const EVENT_ARRAY_PASS_THROUGH = 10;
+/** 事件 data 对象 key 透传阈值。≤20 个 key 的对象整体展示。 */
+export declare const EVENT_OBJ_KEYS_MAX = 20;
+/** 事件 data 对象 key 预览数。超过阈值时显示前 10 个 key 名。 */
+export declare const EVENT_OBJ_KEYS_PREVIEW = 10;
+/** 节点树序列化最大节点数。240 覆盖典型 UI 层级（10 层 × 每层 20 个节点）。 */
+export declare const TREE_MAX_NODES = 240;
+/** 节点树最大遍历深度。6 层覆盖 Panel→ScrollView→view→content→item→label。 */
+export declare const TREE_MAX_DEPTH = 6;
+/** 节点详情中组件列表截断。16 个组件远超实际（通常 3-6 个），纯防御。 */
+export declare const TREE_MAX_COMPONENTS = 16;
+/** Bridge inbox/outbox 轮询间隔 (ms)。250ms 是人类无感知的延迟 + CPU 友好的频率。 */
+export declare const IPC_POLL_MS = 250;
+/** Bridge 任务默认超时 (ms)。120s 覆盖最慢的批量资源写入操作。 */
+export declare const IPC_TIMEOUT_MS = 120000;
+/** Bridge 心跳最大年龄 (ms)。超过 30s 认为 Bridge 已崩溃或 Cocos 已关闭。 */
+export declare const IPC_HEARTBEAT_MAX_AGE_MS = 30000;
+/** Commander 默认 max_tokens。4096 覆盖 DSL 输出的典型长度（200-800 tokens）+ 安全余量。 */
+export declare const LLM_MAX_TOKENS = 4096;
+/** Commander 默认温度。0.3 在 DSL 翻译任务上给最低随机性，保持输出稳定。 */
+export declare const LLM_TEMPERATURE = 0.3;
+/** Commander 最大重试次数。3 次 + 指数退避覆盖瞬时网络错误和短暂限流。 */
+export declare const LLM_MAX_RETRIES = 3;
+/** 未知 probe 类型兜底截断上限 (bytes)。10KB 远超合法探针结果（最大 ~2KB 的组件属性），纯防御 10MB blob。 */
+export declare const DISPLAY_FALLBACK_MAX = 10000;
+/** HTTP 错误详情截断。API 错误响应 body 可能是 HTML 页面，200 字符足够定位问题。 */
+export declare const LLM_ERROR_DETAIL_MAX = 200;
+/** Commander 连续相同错误上限。超过则终止 session，防止 LLM 死循环。 */
+export declare const GATEWAY_MAX_CONSECUTIVE_SAME_ERROR = 2;
+/** 单次对话最大轮数。超过则报错终止，不静默截断——保护 API 上下文窗口。
+ *  20 轮覆盖典型工作流（probe→schema→compile→write→save）+ 2-3 次错误重试。
+ *  复杂任务（多层嵌套 prefab 等）可能需要 30+ 轮，可通过 gateway.config.json 中
+ *  maxTurns 字段覆盖。未配置时使用此默认值。 */
+export declare const GATEWAY_MAX_TURNS = 20;
+/** 会话摘要中最近创建资产展示条数。5 条足够 LLM 知道上次做了什么。 */
+export declare const SESSION_RECENT_CREATIONS = 5;
+//# sourceMappingURL=constants.d.ts.map

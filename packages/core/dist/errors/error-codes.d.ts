@@ -1,0 +1,58 @@
+export declare const ERR_UNKNOWN = "E_UNKNOWN";
+export declare const ERR_TIMEOUT = "E_TIMEOUT";
+export declare const ERR_CANCELLED = "E_CANCELLED";
+export declare const ERR_NOT_IMPLEMENTED = "E_NOT_IMPLEMENTED";
+export declare const ERR_INVALID_ARG = "E_INVALID_ARG";
+export declare const ERR_PC_NO_COCOS_PROJECT = "PC_NO_COCOS_PROJECT";
+export declare const ERR_PC_WORKSPACE_NOT_COCOS = "PC_WORKSPACE_NOT_COCOS";
+export declare const ERR_PC_PATH_NOT_FOUND = "PC_PATH_NOT_FOUND";
+export declare const ERR_CFG_NO_API_KEY = "CFG_NO_API_KEY";
+export declare const ERR_CFG_NO_PROVIDER = "CFG_NO_PROVIDER";
+export declare const ERR_CFG_INVALID_CONFIG = "CFG_INVALID_CONFIG";
+export declare const ERR_CMD_NETWORK = "CMD_NETWORK";
+export declare const ERR_CMD_RATE_LIMIT = "CMD_RATE_LIMIT";
+export declare const ERR_CMD_AUTH = "CMD_AUTH";
+export declare const ERR_CMD_SERVER_ERROR = "CMD_SERVER_ERROR";
+export declare const ERR_CMD_PARSE = "CMD_PARSE";
+export declare const ERR_CMD_MAX_RETRIES = "CMD_MAX_RETRIES";
+export declare const ERR_DSL_PARSE = "DSL_PARSE";
+export declare const ERR_DSL_UNKNOWN_CMD = "DSL_UNKNOWN_CMD";
+export declare const ERR_DSL_MISSING_ARG = "DSL_MISSING_ARG";
+export declare const ERR_BR_BRIDGE_OFFLINE = "BR_BRIDGE_OFFLINE";
+export declare const ERR_BR_TASK_FAILED = "BR_TASK_FAILED";
+export declare const ERR_BR_TASK_TIMEOUT = "BR_TASK_TIMEOUT";
+export declare const ERR_BR_INVALID_RESPONSE = "BR_INVALID_RESPONSE";
+export declare const ERR_ASM_INVALID_SPEC = "ASM_INVALID_SPEC";
+export declare const ERR_ASM_MISSING_TEMPID = "ASM_MISSING_TEMPID";
+export declare const ERR_ASM_DUPLICATE_TEMPID = "ASM_DUPLICATE_TEMPID";
+export declare const ERR_ASM_MULTI_ROOT = "ASM_MULTI_ROOT";
+export declare const ERR_ASM_NO_ROOT = "ASM_NO_ROOT";
+export declare const ERR_ASM_INVALID_PARENT = "ASM_INVALID_PARENT";
+export declare const ERR_ASM_UNKNOWN_COMPONENT = "ASM_UNKNOWN_COMPONENT";
+export declare const ERR_ASM_UNRESOLVED_REF = "ASM_UNRESOLVED_REF";
+export declare const ERR_ASM_NO_COMPILED_JSON = "ASM_NO_COMPILED_JSON";
+export declare const ERR_ASM_WRAPPER_ID = "ASM_WRAPPER_ID";
+export declare const ERR_GW_EXECUTION_ERROR = "GW_EXECUTION_ERROR";
+export declare const ERR_GW_UNRESOLVED_TEMPID = "GW_UNRESOLVED_TEMPID";
+export declare const ERR_VAL_NOT_ARRAY = "VAL_NOT_ARRAY";
+export declare const ERR_VAL_MISSING_TYPE = "VAL_MISSING_TYPE";
+export declare const ERR_VAL_INVALID_ID_REF = "VAL_INVALID_ID_REF";
+export declare const ERR_VAL_UNKNOWN_TYPE = "VAL_UNKNOWN_TYPE";
+export declare const ERR_SCR_METHOD_NOT_FOUND = "SCR_METHOD_NOT_FOUND";
+export declare const ERR_SCR_SCRIPT_NOT_FOUND = "SCR_SCRIPT_NOT_FOUND";
+export declare const ERR_SCH_COMPONENT_NOT_FOUND = "SCH_COMPONENT_NOT_FOUND";
+export declare const ERR_SCH_CACHE_LOAD_FAILED = "SCH_CACHE_LOAD_FAILED";
+export interface ComdrError {
+    code: string;
+    message: string;
+    needMoreContext?: boolean;
+    fatal?: boolean;
+    detail?: unknown;
+}
+export declare function makeError(code: string, message: string, opts?: {
+    needMoreContext?: boolean;
+    fatal?: boolean;
+    detail?: unknown;
+}): ComdrError;
+export declare function toErrResult(err: ComdrError): import('../types').ErrResult;
+//# sourceMappingURL=error-codes.d.ts.map

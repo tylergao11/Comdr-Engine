@@ -1,0 +1,34 @@
+{
+  "name": "@comdr/bridge",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "watch": "tsc --build --watch"
+  },
+  "dependencies": {},
+  "_cocos": {
+    "package_version": 2,
+    "creator": ">=3.0.0",
+    "title": "Comdr",
+    "description": "Comdr Bridge — Cocos Creator editor AI operator extension.",
+    "author": "Comdr",
+    "contributions": {
+      "menu": [
+        {
+          "path": "Comdr",
+          "label": "Activate Comdr Bridge",
+          "message": "open"
+        }
+      ],
+      "messages": {
+        "open": { "methods": ["open"] },
+        "get-project-info": { "methods": ["getProjectInfo"] },
+        "get-script-graph": { "methods": ["getScriptGraph"] },
+        "run-task-card": { "methods": ["runTaskCard"] }
+      }
+    }
+  }
+}

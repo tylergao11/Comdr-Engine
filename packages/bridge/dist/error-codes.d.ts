@@ -1,0 +1,16 @@
+export declare const ERR_DOC_ASSET_NOT_FOUND = "DOC_ASSET_NOT_FOUND";
+export declare const ERR_DOC_PARSE_ERROR = "DOC_PARSE_ERROR";
+export declare const ERR_DOC_INVALID_FORMAT = "DOC_INVALID_FORMAT";
+export declare const ERR_DOC_NODE_NOT_FOUND = "DOC_NODE_NOT_FOUND";
+export declare const ERR_DOC_COMPONENT_NOT_FOUND = "DOC_COMPONENT_NOT_FOUND";
+export declare const ERR_DOC_INVALID_EDIT_TYPE = "DOC_INVALID_EDIT_TYPE";
+export declare const ERR_DOC_TREE_REBUILD_ERROR = "DOC_TREE_REBUILD_ERROR";
+export declare const ERR_DOC_EDIT_ERROR = "DOC_EDIT_ERROR";
+export declare const ERR_DOC_UNKNOWN_COMPONENT = "DOC_UNKNOWN_COMPONENT";
+export declare const ERR_DOC_DUPLICATE_COMPONENT = "DOC_DUPLICATE_COMPONENT";
+export declare const ERR_DOC_CYCLE_DETECTED = "DOC_CYCLE_DETECTED";
+export declare const ERR_DOC_ROOT_NOT_FOUND = "DOC_ROOT_NOT_FOUND";
+export declare const ERR_DOC_TREE_BUILD_ERROR = "DOC_TREE_BUILD_ERROR";
+export declare const ERR_DOC_AMBIGUOUS_NODE = "DOC_AMBIGUOUS_NODE";
+export declare const ERR_BR_NO_DOC = "BR_NO_DOC";
+//# sourceMappingURL=error-codes.d.ts.map
