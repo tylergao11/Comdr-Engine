@@ -2,13 +2,13 @@
 
 ## 当前状态
 
-57 测试，覆盖 DSL 解析 → 组装 → 校验 管线 + 记忆层。管线是脆弱的（参数多、嵌套深），这 57 个是有效安全网。剩下 80% 代码靠"代码简单 + 跑起来看"。
+**0 测试。** 项目尚未编写任何测试文件，`tests/` 目录为空。所有代码靠"跑起来看"验证。
 
 ## 优先级
 
 | 优先级 | 模块 | 理由 |
 |--------|------|------|
-| P0 | Knowledge Store | Comdr 的"脑子"——纠错、补全、默认值。坏了用户不会知道，只会看到错误结果 |
+| P0 | ComponentCatalog + knowledge-data | Comdr 的"脑子"——组件目录、纠错补全、默认值。坏了用户不会知道，只会看到错误结果 |
 | P0 | Prefab Diff | 写操作的安全网——Snapshot/Diff/Rollback 管线 |
 | P1 | UndoManager (Snapshot) | Snapshot/Diff/Rollback 核心 |
 | P1 | Tool Center | Bridge IPC 通信协议 |
@@ -18,66 +18,66 @@
 
 ---
 
-## P0: Knowledge Store（~20 tests）
+## P0: ComponentCatalog + knowledge-data（~20 tests）
 
-**目标**：纠错、补全、冲突检测、引用绑定全部有覆盖。
+**目标**：组件目录加载、模糊匹配、纠错补全、依赖检测全部有覆盖。
 
-### 测试文件：`tests/knowledge.test.ts`
+### 测试文件：`tests/component-catalog.test.ts`
 
 #### 1. 加载与基础查询（4 tests）
 
 | # | 测试 | 断言 |
 |---|------|------|
-| 1 | `loadKnowledge loads from default path` | `isLoaded()` → true, 至少 20 个组件 |
-| 2 | `getKnowledge with cc. prefix` | `getKnowledge('cc.Button')` → 非 null |
-| 3 | `getKnowledge auto-prefixes cc.` | `getKnowledge('Button')` → 等同于 `getKnowledge('cc.Button')` |
-| 4 | `getKnowledge returns null for unknown` | `getKnowledge('cc.NonExistent')` → null |
+| 1 | `catalog.load loads from project path` | `load(projectPath)` → count > 20 |
+| 2 | `catalog.get with cc. prefix` | `get('cc.Button')` → ComponentEntry 非 null |
+| 3 | `catalog.resolve auto-prefixes cc.` | `resolve('Button')` → `'cc.Button'` |
+| 4 | `catalog.get returns undefined for unknown` | `get('cc.NonExistent')` → undefined |
 
-#### 2. 子结构（4 tests）
+#### 2. 子结构与 knowledge（4 tests）
 
 | # | 测试 | 断言 |
 |---|------|------|
-| 5 | `getChildStructure for Button returns label child` | children[0].id === 'label' |
-| 6 | `getChildStructure for ScrollView returns view→content nesting` | 2 层嵌套，content 的 parent === 'view' |
-| 7 | `getChildStructure for UITransform returns empty` | [] |
-| 8 | `getChildStructure for unknown component returns empty` | [] |
+| 5 | `knowledge.children for Button returns label child` | entry.knowledge.children[0].id === 'label' |
+| 6 | `knowledge.children for ScrollView returns view→content nesting` | 2 层嵌套 |
+| 7 | `knowledge.children for UITransform returns empty` | [] 或 undefined |
+| 8 | `knowledge.children for unknown component returns empty` | undefined |
 
 #### 3. 依赖与冲突（4 tests）
 
 | # | 测试 | 断言 |
 |---|------|------|
-| 9 | `getRequiredComponents for Button` | includes 'cc.UITransform' |
-| 10 | `getRequiredComponents for UITransform returns empty` | [] |
-| 11 | `hasConflict Widget vs Layout` | true |
-| 12 | `hasConflict Label vs Sprite` | false |
+| 9 | `knowledge.requires for Button` | includes 'cc.UITransform' |
+| 10 | `knowledge.requires for UITransform returns empty` | [] 或 undefined |
+| 11 | `knowledge.conflicts Widget vs Layout` | Widget.conflicts includes 'cc.Layout' |
+| 12 | `knowledge.conflicts Label vs Sprite` | undefined |
 
 #### 4. 模糊匹配（4 tests）
 
 | # | 测试 | 断言 |
 |---|------|------|
-| 13 | `fuzzyFindComponent exact match` | 'cc.Button' → 'cc.Button' |
-| 14 | `fuzzyFindComponent typo distance 1` | 'cc.Buton' → 'cc.Button' |
-| 15 | `fuzzyFindComponent typo distance 2` | 'cc.ScrolView' → 'cc.ScrollView' |
-| 16 | `fuzzyFindComponent distance > 2 returns null` | 'cc.XyzAbcQwe' → null |
+| 13 | `resolve exact match` | `resolve('cc.Button')` → `'cc.Button'` |
+| 14 | `fuzzyFindAll typo distance 1` | `fuzzyFindAll('cc.Buton')` includes `'cc.Button'` |
+| 15 | `fuzzyFindAll typo distance 2` | `fuzzyFindAll('cc.ScrolView')` includes `'cc.ScrollView'` |
+| 16 | `fuzzyFindAll distance > 2 returns empty` | `fuzzyFindAll('cc.XyzAbcQwe')` → [] |
 
 #### 5. 默认值（2 tests）
 
 | # | 测试 | 断言 |
 |---|------|------|
-| 17 | `getDefaults for UITransform` | width=100, height=100, anchorX=0.5 |
-| 18 | `getDefaults for ScrollView` | horizontal=true, bounceDuration≈0.23 |
+| 17 | `knowledge.defaults for UITransform` | contentSize 有默认值 |
+| 18 | `knowledge.defaults for ScrollView` | horizontal=true, bounceDuration≈0.23 |
 
 #### 6. Refs（2 tests）
 
 | # | 测试 | 断言 |
 |---|------|------|
-| 19 | `getRefs for ScrollView` | content.targetType === 'node', content.targetChild === 'content' |
-| 20 | `getRefs for component without refs` | {} |
+| 19 | `knowledge.refs for ScrollView` | content.targetType === 'node', content.targetChild === 'content' |
+| 20 | `knowledge.refs for component without refs` | undefined |
 
 #### 特殊处理
 
-- 每个测试前重置 `_knowledge` 单例。可导出一个 `resetKnowledge()` 或直接 `delete require.cache` + 重新 import。
-- 用 `loadKnowledge(path.join(__dirname, '../packages/core/dist/knowledge/component-knowledge.json'))` 加载真实数据。
+- 每个测试前 new 新的 `ComponentCatalog` 实例，隔离状态
+- 加载真实 `component-cache.json`（`{projectPath}/temp/comdr/component-cache.json`）
 
 ---
 
@@ -248,4 +248,4 @@
 | 4 | Gateway + MCP Server | ~8 |
 | **合计** | | **~62 new tests** |
 
-实施后：57 + 62 = **~119 tests**，管线 + 智能层 + IPC + 编排全部有覆盖。
+实施后：0 + 62 = **~62 tests**，管线 + 智能层 + IPC + 编排全部有覆盖。

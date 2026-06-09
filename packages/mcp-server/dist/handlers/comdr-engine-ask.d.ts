@@ -34,4 +34,4 @@ export interface ToolCallResult {
     diffs?: unknown[];
 }
 export declare function handleToolsCall(args: Record<string, unknown>, signal: AbortSignal): Promise<ToolCallResult>;
-//# sourceMappingURL=comdr-ask.d.ts.map
+//# sourceMappingURL=comdr-engine-ask.d.ts.map

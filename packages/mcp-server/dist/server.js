@@ -38,22 +38,12 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MCP_SERVER = void 0;
 const readline = __importStar(require("readline"));
-const comdr_ask_1 = require("./handlers/comdr-engine-ask");
-/** 动态加载 image handler 模块（只清除 image/ 目录缓存，不波及 comdr-ask 及 @comdr/core 依赖树） */
-function loadImageModules() {
-    for (const key of Object.keys(require.cache)) {
-        const normalized = key.replace(/\\/g, '/');
-        if (normalized.includes('/comdr/mcp-server/src/handlers/image/')) {
-            delete require.cache[key];
-        }
-    }
-    return require('./handlers/image');
-}
+const comdr_engine_ask_1 = require("./handlers/comdr-engine-ask");
 /** 动态加载 handler，每次调用前清除缓存确保热重载生效 */
 function reloadHandlerModule() {
     // 精确清除 handler 模块缓存（require.resolve 拿到绝对路径）
     try {
-        delete require.cache[require.resolve('./handlers/comdr-ask')];
+        delete require.cache[require.resolve('./handlers/comdr-engine-ask')];
     }
     catch { /* 首次加载 */ }
     // 清除所有 @comdr/mcp-server 相关模块（monorepo 和 npm 两种路径）
@@ -63,7 +53,7 @@ function reloadHandlerModule() {
             delete require.cache[key];
         }
     }
-    return require('./handlers/comdr-ask');
+    return require('./handlers/comdr-engine-ask');
 }
 // ===== 服务器 =====
 class McpServer {
@@ -126,21 +116,21 @@ class McpServer {
         try {
             switch (request.method) {
                 case 'initialize':
-                    await this._respond(request, (0, comdr_ask_1.handleInitialize)(reqId, request.params || {}));
+                    await this._respond(request, (0, comdr_engine_ask_1.handleInitialize)(reqId, request.params || {}));
                     break;
                 case 'notifications/initialized':
                     // 无需响应
                     break;
                 case 'tools/list':
                     await this._respond(request, {
-                        tools: (() => { const im = loadImageModules(); return [comdr_ask_1.TOOL_DEFINITION, im.READ_IMAGE_TOOL, im.SLICE_IMAGE_TOOL, im.GENERATE_IMAGE_TOOL]; })(),
+                        tools: [comdr_engine_ask_1.TOOL_DEFINITION],
                     });
                     break;
                 case 'tools/call':
                     await this._handleToolsCall(request);
                     break;
                 case 'notifications/cancelled':
-                    (0, comdr_ask_1.handleCancel)(request.params || {}, this._pendingAborts);
+                    (0, comdr_engine_ask_1.handleCancel)(request.params || {}, this._pendingAborts);
                     break;
                 default:
                     this._write({
@@ -161,17 +151,7 @@ class McpServer {
     async _handleToolsCall(request) {
         const params = request.params;
         const toolName = params?.name;
-        // ---- Image 工具（统一入口，每次调用前自动清除 image/ 模块缓存）----
-        if (toolName === 'comdr-read-image') {
-            return this._handleImageTool(request, (args) => loadImageModules().handleReadImage(args));
-        }
-        if (toolName === 'comdr-slice-image') {
-            return this._handleImageTool(request, (args) => loadImageModules().handleSliceImage(args));
-        }
-        if (toolName === 'comdr-generate-image') {
-            return this._handleImageTool(request, (args) => loadImageModules().handleGenerateImage(args));
-        }
-        // ---- comdr-engine-ask（重量，需要 hot-reload + abort）----
+        // ---- comdr-engine-ask（唯一 MCP 工具）----
         if (toolName !== 'comdr-engine-ask') {
             this._write({
                 jsonrpc: '2.0',
@@ -209,26 +189,6 @@ class McpServer {
         }
         finally {
             this._pendingAborts.delete(taskId);
-        }
-    }
-    /** Image 工具统一响应包装 — 三个工具（read/slice/generate）共享同一 try/catch 结构 */
-    async _handleImageTool(request, handler) {
-        const params = request.params;
-        try {
-            const result = await handler(params?.arguments || {});
-            this._write({
-                jsonrpc: '2.0', id: request.id,
-                result: { content: result.content, isError: result.isError },
-            });
-        }
-        catch (err) {
-            this._write({
-                jsonrpc: '2.0', id: request.id,
-                result: {
-                    content: [{ type: 'text', text: `Tool error: ${err.message}` }],
-                    isError: true,
-                },
-            });
         }
     }
     async _respond(request, result) {

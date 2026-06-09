@@ -1,148 +1,197 @@
-# Comdr Overlay v4 — Grok Noir
+# Comdr Overlay — 执行状态仪表台
 
-> 纯黑底 × 琥珀暖光 × 极端克制 × 即时反馈
+> Tauri v2 透明悬浮窗 · 实时监控 Comdr Bridge 执行状态
+
+---
+
+## 技术栈
+
+| 层 | 技术 | 文件 |
+|----|------|------|
+| 窗口框架 | Tauri v2 | `src-tauri/tauri.conf.json` |
+| 后端命令 | Rust | `src-tauri/src/lib.rs`, `config.rs`, `history.rs`, `execution_log.rs` |
+| 前端 UI | vanilla JS + CSS | `src/main.js`, `src/style.css` |
+| 前端结构 | 静态 HTML | `index.html` |
+| 通信 | `invoke()` ↔ `#[tauri::command]` | JS→Rust 双向 |
+
+**无框架。** 前端零依赖（除 `@tauri-apps/api` 做桥接），纯 DOM 操作 + CSS 动画。
+
+## 窗口配置
+
+```
+type:       无边框透明 (decorations: false, transparent: true)
+默认尺寸:   380 × 240
+最小尺寸:   280 × 90
+层级:       alwaysOnTop + skipTaskbar
+圆角:       22px (CSS border-radius)
+阴影:       无 (shadow: false)
+```
+
+## 架构
+
+```
+┌─────────────────────────────────────────┐
+│  Rust 后端 (src-tauri/src/)              │
+│  ┌──────────┐ ┌──────────┐ ┌─────────┐ │
+│  │ heartbeat│ │ request  │ │ poll    │ │
+│  │ 心跳检测  │ │ _undo    │ │ exec log│ │
+│  └────┬─────┘ └────┬─────┘ └────┬────┘ │
+│       │            │            │       │
+│  config.rs    history.rs   execution_log.rs
+├───────┼────────────┼────────────┼───────┤
+│  Tauri invoke_handler                 │
+├───────┼────────────┼────────────┼───────┤
+│  JS 前端 (src/)                       │
+│  ┌──────────────────────────────────┐ │
+│  │  invoke('heartbeat') 每 3s      │ │
+│  │  invoke('poll_execution_log') 1s │ │
+│  │  C 状态机 + DOM 渲染             │ │
+│  │  CSS 动画 (GPU accelerated)     │ │
+│  └──────────────────────────────────┘ │
+└─────────────────────────────────────────┘
+```
+
+### Rust 后端命令
+
+| 命令 | 功能 |
+|------|------|
+| `heartbeat` | 读 `bridge.json` + `latest-tokens.json`，返回在线状态、当前文档、token 用量 |
+| `load_history` | 读 `history.json`，返回最近 20 条 |
+| `load_config` | 读 `overlay-config.json` |
+| `save_config` | 写 `overlay-config.json` |
+| `get_layout` | 返回预定义尺寸常量 |
+| `resize_window` | 调整窗口宽高 |
+| `request_undo` | 向 Bridge inbox 写入撤销任务卡片 |
+| `poll_execution_log` | 读取 Gateway 写入的 `execution-log.jsonl`，返回增量事件 |
+
+### C 状态机（JS 端）
+
+```
+idle → bridged → racing → watching → executing → done → idle
+                                    ↘ error → idle
+```
+
+8 种状态，每种对应不同的 CSS 动画 class：
+- `c-idle` — 缓慢呼吸，安静基线
+- `c-bridged` — Bridge 重连，3 次弹跳后回归
+- `c-racing` — session 启动，快速旋转 + 绿色发光
+- `c-watching` — 轮询等待 Commander 输出
+- `c-executing` — 命令执行中，快速微动
+- `c-done` — 任务完成，轻快旋转收尾
+- `c-error` — 出错，急剧抖动
+
+### 执行事件渲染
+
+`poll_execution_log` 返回的 `execution-log.jsonl` 事件按 `kind` 分发：
+
+| kind | 渲染 |
+|------|------|
+| `session-start` | 居中消息行 + 切换到 `racing` |
+| `round-start` | 仅状态切换 → `watching` |
+| `command-executed` | 紧凑日志卡片（图标 + 标签 + 摘要 + 耗时 + ✓/✗） |
+| `session-done` | 分隔线 `── summary ──` |
+| `session-error` | 红色错误分隔线 |
+
+日志卡片按命令类型着色（琥珀=compile，绿=write，蓝=probe，青=open，紫=schema/detail，金=set-prop/edit，红=delete/error）。最多保留 50 条，超出从顶部推出。
+
+### 撤销
+
+每条成功的日志卡片显示 `↩` 按钮。点击向 Bridge inbox 写入 `undo-N` 任务卡片，count 从该卡算起到最新。撤销后该卡及之后所有卡标记为已撤销。
+
+### 窗口吸附
+
+```
+normal → (拖到顶部 Y≤25px) → docked → (hover) → peeking → (离开) → docked → (拖下 Y>65px) → normal
+```
+
+- **Rust 端**：通过 `WindowEvent::Moved` 检测 Y 坐标，触发 snap 状态切换并 emit `snap-changed` 事件
+- **JS 端**：监听 `snap-changed` 事件 + `mouseenter`/`mouseleave`，控制 docked/peeking 的 CSS class
 
 ---
 
 ## 配色
 
 ```
-底色      #0a0a0a   纯黑，不发灰
-面板      #141414   微提亮，区分层级
-边框      #222222   极暗描边
-文字      #f0f0f0   亮白，高对比
-次文字    #888888   灰色辅助
-强调      #f59e0b   琥珀金 — 仅焦点态 / 错误 / 高亮
-错误      #ef4444   暖红，仅错误用
+底色      rgba(8,8,8,0.40)   毛玻璃暗底
+hover     rgba(8,8,8,1)      鼠标悬停变实
+边框      rgba(255,255,255,0.035) → hover 0.08
+文字      #e6e6e6   亮白
+次文字    #8c8c8c   灰色辅助
+三次文字  #5c5c5c   最弱辅助
+强调      #f59e0b   琥珀金 — 焦点态 / 错误 / 高亮
+成功      #22c55e   绿色 — Bridge 在线 / 命令成功
+错误      #ef4444   红色 — 失败 / 熔断
 ```
 
-无毛玻璃，无渐变，无阴影扩散。干净暗底 + 精确描边。
+无毛玻璃，无渐变，无阴影扩散。暗底 + border + backdrop-blur。
 
 ## 字体
 
 | 用途 | 字体 | Weight | 大小 |
 |------|------|--------|------|
 | UI 文本 | Inter | 400 | 13px |
-| 数字/耗时 | JetBrains Mono | 450 | 12px |
-| 输入 | Inter | 400 | 14px |
-| 标题 | Inter | 500 | 12px |
+| 数字/耗时 | JetBrains Mono | 400 | 10-12px |
+| 命令标签 | JetBrains Mono | 400 | 9px |
+| 标题 | Inter | 500 | 11px |
 
-## 窗口
+## 动画
 
-```
-默认      380 × 144
-resizable: true
-minWidth:  280
-minHeight: 120
-decorations: false
-alwaysOnTop: true
-背景色:    #0a0a0a
-圆角:      16px
-```
+全部 CSS `@keyframes`，GPU 加速（transform + opacity）。
 
-## 三态 + 比例驱动
+| 动画 | 时长 | 曲线 | 说明 |
+|------|------|------|------|
+| 卡片入场 | 320ms | spring | queue-in: translateY + scale |
+| 卡片退出 | 220ms | ease-in | queue-out: translateY + opacity |
+| 状态灯呼吸 | 2.4s | ease | 亮灭淡变 |
+| 毛玻璃 hover | 500ms | ease | blur + background + border 过渡 |
+| 边框呼吸 (active) | 1s | ease | box-shadow 明暗交替 |
+| token 数字翻转 | 300ms | ease | 旧值飞出，新值弹入 |
+| 清空飞出 | 350ms | ease-out | translateX(-120px) + rotate |
+| 撤销按钮 hover | 150ms | — | opacity → 金色 + 微背景 |
+| 进度旋转 (pending) | 800ms | linear | spin-pending 持续旋转 |
 
-```
-Collapsed  w × max(120, w*0.38)
-Expanded   w × min(screenH-40, w*1.25)
-Folded     40 × 120 竖条标签
-```
-
-展开/收起 150ms，即时反馈。无弹性，无 spring。
+---
 
 ## 组件
 
 ### TitleBar (28px)
-- 左：6px 琥珀圆点（在线亮/离线灭）+ "Comdr" 12px 灰色
-- 中：文档名 11px 灰色，过长截断
-- 右：— 隐藏按钮
-- 双击空白 → 折叠/恢复
-- 拖拽手柄仅占中部空白区域
+- 左：6px 状态圆点（Bridge 在线=绿色呼吸，离线=灰色暗光）+ "Comdr" 11px 灰色
+- C 字母独立 class `c-wobble`，8 种状态动画
+- 中：文档名 10px 灰色，过长 CSS ellipsis 截断
+- 右：拖拽手柄 (`-webkit-app-region: drag`)
+- 无隐藏/关闭按钮——托盘右键控制
 
 ### CommandLog
-- 格式：`▸ <摘要> <耗时右对齐> <✓/✗>`
-- 折叠 3 条，展开全部 + 滚动
+- 格式：`图标 标签 摘要 耗时 ✓/✗`
+- 每条命令按 `CMD_META` 映射图标和标签（17 种命令类型）
+- max 50 条，超出从顶部 queue-out 推出
 - 错误行点击展开详情，底部可重试
-- 空态："等待指令..." 居中浅灰
-- 成功 ✓ 淡出 100ms，失败 ✗ 微抖 200ms + 变红
-- 新条目直接从底部出现，无滑动动画
+- undo 按钮 hover 才显示
 
-### InputBox (36px)
-- 前缀 `>` 固定，JetBrains Mono 灰色
-- 输入 Inter 14px
-- 下划线失焦 `#222` → 聚焦 `#f59e0b`，100ms
-- ↑↓ 翻历史，Enter 提交
-- `>` 开头 DSL 直发
+### TokenDisplay (InfoBar 底部)
+- 格式：`Token ▓▓▓▓▓▓░░░░░ 12K ↓38%`
+- 缓存命中率 ≥10% 时显示 `↓N%`
+- 数字切换时 flip 动画
+- Bridge 离线时显示 `—`
 
-### ActionBar (28px)
-```
-[展开 ▲]                              [↩ 撤销]
-```
-- 两个按钮，仅左键
-- 琥珀仅在可撤销时亮
-- hover: 100ms 文字变亮，无缩放
-
-### InfoPanel (展开态 40px)
-```
-Token ▓▓▓▓▓▓░░░░░  38%  │  Schema  │  Bridge ◉
-```
-- `|` 分隔，等宽字体 11px
-- Token >85% 变琥珀
+### TrayIcon
+- 右键菜单：显示/隐藏 | 退出
+- 左键单击：显示窗口 + 定位到右下角 + 聚焦
 
 ---
 
-## 动画
-
-QML 原生 GPU 动画。Spring 用 `SpringAnimation`，数字过渡用 `Behavior on`。
-
-| 动画 | 时长 | 曲线 | 说明 |
-|------|------|------|------|
-| 展开/收起 | 320ms | Spring(0.3, 0.8, 1.0) | 高度过渡，微弹不抖 |
-| 命令入场 | 280ms | Spring | slideInRight，每条 stagger 40ms |
-| 成功 ✓ | 240ms | Spring | 微放大弹入 + 淡入 |
-| 失败 ✗ | 360ms | EaseOut | shake 水平抖动 + 变红 |
-| 等待 ⏳ | 500ms 循环 | Linear | 三点 dotBreathe 循环 |
-| 状态灯 | 200ms | EaseInOut | 亮灭淡变 |
-| 输入聚焦 | 200ms | EaseOut | 描边 `#222` → `#f59e0b`，微发光 |
-| 按钮 hover | 120ms | EaseOut | scale(1.03) + 文字变亮 |
-| 按钮 press | 80ms | EaseIn | scale(0.97) |
-| 信息面板 | 250ms | Spring | fadeUp + 微移入 |
-| 毛玻璃微光 | 8s 循环 | Linear | 窗口表面光晕缓慢流动 |
-
----
-
-## 操作栏
-
-仅两个按钮，全部左键：
-
-| 按钮 | 功能 |
-|---|---|
-| 展开 ▲ / 收起 ▼ | 保持宽度，调高度 |
-| ↩ 撤销 | 可撤销时亮(琥珀)，否则灰 |
-
-托盘右键：显示/隐藏 | 退出。设置通过配置文件修改。
-
----
-
-## Rust/JS 后端
-
-保留现有 Rust 后端逻辑，Qt 侧用 C++ 重写窗口 + QML UI：
+## 数据流
 
 ```
-packages/overlay/
-├── DESIGN.md
-├── CMakeLists.txt
-├── src/
-│   ├── main.cpp              Qt 入口
-│   ├── mcpclient.h/.cpp      MCP 子进程 (从 Rust mcp_client.rs 移植)
-│   ├── config.h/.cpp         配置读写
-│   ├── history.h/.cpp        历史持久化
-│   └── bridgewatcher.h/.cpp  bridge.json 心跳
-└── qml/
-    ├── main.qml              根窗口 + 状态机
-    ├── TitleBar.qml
-    ├── CommandLog.qml
-    ├── InputBox.qml
-    ├── ActionBar.qml
-    └── InfoPanel.qml
+Gateway (assembly-gateway.ts)
+  │  emitEvent() → execution-log.jsonl
+  │  token usage → latest-tokens.json
+  ▼
+{project}/temp/comdr/
+  ├── execution-log.jsonl    ← Overlay 每 1s 增量读取
+  ├── latest-tokens.json     ← Overlay 每 3s 读取
+  ├── bridge.json            ← 心跳检测依据
+  └── inbox/                 ← undo 任务写入目标
 ```
+
+Overlay 是被动观察者——只读文件，不主动调用任何 API。撤销是唯一的写操作（向 inbox 写入任务卡片）。

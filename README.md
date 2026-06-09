@@ -172,8 +172,8 @@ catalog.resolve('testComdr'); // → 'a1b2c3d4...'（压缩 UUID）
 | `core/src/perception/asset-resolver.ts` | 路径→UUID（含 @ 子资产） |
 | `core/src/knowledge/knowledge-data.ts` | 组件知识库数据（内嵌） |
 | `bridge/src/document.ts` | prefab/scene JSON 生命周期 |
-| `bridge/src/asset-probe.ts` | 资产查询 |
 | `bridge/src/probe-v2.ts` | 统一探针入口 |
+| `bridge/src/bridge-probe-lib.ts` | 引擎探针库（scene-script 注入） |
 | `mcp-server/src/handlers/comdr-engine-ask.ts` | MCP 工具 |
 
 ## 环境
@@ -187,7 +187,9 @@ catalog.resolve('testComdr'); // → 'a1b2c3d4...'（压缩 UUID）
 
 ```bash
 git clone <url> comdr && cd comdr
-npm run setup    # 依赖 + 编译 + Overlay + Bridge
+npm install          # 安装依赖
+npm run build        # 编译所有包
+npm run sync-bridge:project  # 部署 Bridge 到 Cocos 项目
 ```
 
 1. 打开 Cocos Creator → 启用 `comdr-cocos-bridge` → 重启

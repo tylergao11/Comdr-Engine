@@ -25,20 +25,20 @@ memory/
 ### Comdr 记忆模型
 
 ```
-compact-codec.ts（Commander 系统提示，静态）
+gateway/prompt.ts（Commander 系统提示，动态生成）
 assembly-gateway.ts（编排器，运行时上下文注入）
 
 内存层：
-  CommanderState      — 会话级，tempId→UUID，不持久化
-  DocumentState       — 会话级，打开文档追踪
-  AssetCache          — 持久化，路径→UUID
-  ScriptRegistry      — 持久化，脚本元数据
-  SessionStore        — 持久化，会话历史
-  SnapshotManager     — 会话级，快照/回滚
-  KnowledgeBase       — 静态，组件默认值+结构
-  ComponentSchemas    — 生成，233 组件类型
-  ExecutionLogger     — 持久化，事件日志（供 Overlay）
-  ValueStore          — 会话级，泛型 KV（未使用）
+  CommanderState      — 会话级，tempId→UUID，不持久化（session-memory.ts）
+  DocumentState       — 会话级，打开文档追踪（document-state.ts）
+  AssetCache          — 持久化，路径→UUID（asset-cache.ts）
+  ComponentCatalog    — 持久化，引擎组件 + 用户脚本统一目录（component-catalog.ts）
+  SessionStore        — 持久化，会话历史（session-store.ts）
+  SnapshotManager     — 会话级，快照/回滚（undo-manager.ts）
+  UndoManager         — 会话级，legacy 单槽位撤销（undo-manager.ts）
+  knowledge-data.ts   — 静态，组件默认值+结构（编译时内嵌）
+  component-cache.json — 生成，233 组件类型 schema
+  ExecutionLogger     — 持久化，事件日志（gateway/execution-logger.ts）
 ```
 
 ### 差距分析
@@ -46,11 +46,11 @@ assembly-gateway.ts（编排器，运行时上下文注入）
 | 能力 | Claude Code | Comdr | 差距 |
 |---|---|---|---|
 | 跨会话记忆 | memory/*.md，结构化 | SessionStore（仅会话记录） | Comdr 缺用户反馈/经验记忆 |
-| 项目指令 | CLAUDE.md | compact-codec.ts | 同级，但 Comdr 是静态 prompt |
+| 项目指令 | CLAUDE.md | gateway/prompt.ts | 同级，Comdr 动态注入 catalog 上下文 |
 | 计划持久化 | plans/*.md | 无 | Comdr 缺 |
 | 内部引用 | `[[link]]` | 无 | Comdr 缺 |
 | 模板保持 | frontmatter 元数据 | 无 | Comdr 缺 |
-| 引擎级上下文 | 无 | 233 组件 schema、知识库、资产缓存 | Comdr 优势 |
+| 引擎级上下文 | 无 | ComponentCatalog（233 组件 schema）+ knowledge-data + AssetCache | Comdr 优势 |
 | 实时文档状态 | 无 | Bridge 心跳 → DocumentState | Comdr 优势 |
 | 安全执行 | 无 | Snapshot/Undo | Comdr 优势 |
 
