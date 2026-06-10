@@ -22,3 +22,6 @@ export const ERR_DOC_AMBIGUOUS_NODE = 'DOC_AMBIGUOUS_NODE';
 
 // ----- General (BR) -----
 export const ERR_BR_NO_DOC = 'BR_NO_DOC';
+
+// ----- 通用消息（非错误码，集中管理避免字符串散落）-----
+export const MSG_NO_DOCUMENT_OPEN = 'No document open';

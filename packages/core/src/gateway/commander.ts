@@ -6,7 +6,7 @@
 import * as https from 'https';
 import * as http from 'http';
 import { cloneJson } from '../foundation/value-kit';
-import { makeError, ERR_CMD_NETWORK, ERR_CMD_RATE_LIMIT, ERR_CMD_AUTH, ERR_CMD_SERVER_ERROR, ERR_CMD_MAX_RETRIES } from '../errors/error-codes';
+import { makeError, ERR_CANCELLED, ERR_CMD_NETWORK, ERR_CMD_RATE_LIMIT, ERR_CMD_AUTH, ERR_CMD_SERVER_ERROR, ERR_CMD_MAX_RETRIES } from '../errors/error-codes';
 import { LLM_MAX_TOKENS, LLM_TEMPERATURE, LLM_MAX_RETRIES, LLM_ERROR_DETAIL_MAX } from '../foundation/constants';
 
 export interface CommanderMessage {
@@ -99,6 +99,32 @@ function classifyHttpError(status: number): { retryable: boolean; code: string }
   return { retryable: false, code: ERR_CMD_NETWORK };
 }
 
+/** 统一的 HTTP 响应处理：状态码检查 + JSON 解析。OpenAI/Anthropic 共用。 */
+function _handleHttpResponse(resp: { status: number; data: string }): Record<string, unknown> {
+  // 状态码错误 → 抛出分类好的错误
+  if (resp.status !== 200) {
+    const classified = classifyHttpError(resp.status);
+    let detail: string = resp.data;
+    try {
+      const parsed = JSON.parse(resp.data);
+      detail = parsed.error?.message || parsed.message || resp.data;
+    } catch { /* raw text */ }
+    throw {
+      ...makeError(classified.code, `HTTP ${resp.status}: ${String(detail).slice(0, LLM_ERROR_DETAIL_MAX)}`),
+      retryable: classified.retryable || resp.status >= 500,
+    };
+  }
+
+  // JSON 解析
+  let data: Record<string, unknown>;
+  try {
+    data = JSON.parse(resp.data);
+  } catch {
+    throw { ...makeError(ERR_CMD_NETWORK, 'Invalid JSON response'), retryable: false };
+  }
+  return data;
+}
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -112,7 +138,7 @@ export async function callCommander(opts: CommanderOptions): Promise<CommanderRe
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     if (opts.signal?.aborted) {
-      throw makeError('E_CANCELLED', 'Aborted by user');
+      throw makeError(ERR_CANCELLED, 'Aborted by user');
     }
 
     try {
@@ -180,34 +206,7 @@ async function _callOpenAiCompatible(opts: CommanderOptions): Promise<CommanderR
   });
 
   const resp = await httpsPost(url, headers, body, opts.signal, 120000);
-
-  if (resp.status === 429) {
-    throw { ...makeError(ERR_CMD_RATE_LIMIT, 'Rate limited'), retryable: true };
-  }
-  if (resp.status === 401 || resp.status === 403) {
-    throw { ...makeError(ERR_CMD_AUTH, `Auth failed (${resp.status})`), retryable: false };
-  }
-  if (resp.status >= 500) {
-    throw { ...makeError(ERR_CMD_SERVER_ERROR, `Server error (${resp.status})`), retryable: true };
-  }
-  if (resp.status < 200 || resp.status >= 300) {
-    let detail = resp.data;
-    try {
-      const parsed = JSON.parse(resp.data);
-      detail = parsed.error?.message || parsed.message || resp.data;
-    } catch { /* raw text */ }
-    throw {
-      ...makeError(ERR_CMD_NETWORK, `HTTP ${resp.status}: ${String(detail).slice(0, LLM_ERROR_DETAIL_MAX)}`),
-      retryable: resp.status >= 500,
-    };
-  }
-
-  let data: Record<string, unknown>;
-  try {
-    data = JSON.parse(resp.data);
-  } catch {
-    throw { ...makeError(ERR_CMD_NETWORK, 'Invalid JSON response'), retryable: false };
-  }
+  const data = _handleHttpResponse(resp);
 
   const choices = data.choices as Array<{ message?: { content?: string }; finish_reason?: string }> | undefined;
   if (!choices || choices.length === 0) {
@@ -258,34 +257,7 @@ async function _callAnthropic(opts: CommanderOptions): Promise<CommanderResponse
   const body = JSON.stringify(bodyObj);
 
   const resp = await httpsPost(url, headers, body, opts.signal, 120000);
-
-  if (resp.status === 429) {
-    throw { ...makeError(ERR_CMD_RATE_LIMIT, 'Rate limited'), retryable: true };
-  }
-  if (resp.status === 401 || resp.status === 403) {
-    throw { ...makeError(ERR_CMD_AUTH, `Auth failed (${resp.status})`), retryable: false };
-  }
-  if (resp.status >= 500) {
-    throw { ...makeError(ERR_CMD_SERVER_ERROR, `Server error (${resp.status})`), retryable: true };
-  }
-  if (resp.status < 200 || resp.status >= 300) {
-    let detail = resp.data;
-    try {
-      const parsed = JSON.parse(resp.data);
-      detail = parsed.error?.message || parsed.message || resp.data;
-    } catch { /* raw text */ }
-    throw {
-      ...makeError(ERR_CMD_NETWORK, `HTTP ${resp.status}: ${String(detail).slice(0, LLM_ERROR_DETAIL_MAX)}`),
-      retryable: resp.status >= 500,
-    };
-  }
-
-  let data: Record<string, unknown>;
-  try {
-    data = JSON.parse(resp.data);
-  } catch {
-    throw { ...makeError(ERR_CMD_NETWORK, 'Invalid JSON response'), retryable: false };
-  }
+  const data = _handleHttpResponse(resp);
 
   // Anthropic 响应格式: content[{type, text}] → 提取 text
   const contentArray = data.content as Array<{ type: string; text?: string }> | undefined;

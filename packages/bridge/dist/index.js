@@ -265,13 +265,13 @@ async function runTaskCardFromEditor(taskCard) {
             case 'edit': {
                 const doc = getDoc();
                 if (!doc)
-                    return { ok: false, error: 'No document open', code: error_codes_1.ERR_BR_NO_DOC };
+                    return { ok: false, error: error_codes_1.MSG_NO_DOCUMENT_OPEN, code: error_codes_1.ERR_BR_NO_DOC };
                 return doc.edit(payload.editType, payload);
             }
             case 'save': {
                 const doc = getDoc();
                 if (!doc)
-                    return { ok: false, error: 'No document open', code: error_codes_1.ERR_BR_NO_DOC };
+                    return { ok: false, error: error_codes_1.MSG_NO_DOCUMENT_OPEN, code: error_codes_1.ERR_BR_NO_DOC };
                 const rawDbUrl = doc.dbUrl;
                 const normalized = (0, path_utils_1.normalizeAssetPath)(rawDbUrl);
                 const savePath = path.join(projectPath, normalized.fsPath);

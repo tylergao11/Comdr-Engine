@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateFileId = generateFileId;
 exports.allocateIds = allocateIds;
 const cocos_world_1 = require("../../model/cocos-world");
+const value_kit_1 = require("../../foundation/value-kit");
 // ---- fileId 生成 ----
 let _cryptoBytes = null;
 function tryCryptoBytes() {
@@ -17,29 +18,11 @@ function tryCryptoBytes() {
                 _cryptoBytes = () => crypto.randomBytes(16).toString('base64').replace(/=+$/, '');
             }
             else {
-                _cryptoBytes = () => {
-                    const hex = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
-                    let seed = Date.now() % 2147483647;
-                    const rng = () => { seed = (seed * 16807) % 2147483647; return seed; };
-                    return hex.replace(/[xy]/g, (c) => {
-                        const r = (rng() % 16) | 0;
-                        const v = c === 'x' ? r : (r & 0x3) | 0x8;
-                        return v.toString(16);
-                    });
-                };
+                _cryptoBytes = value_kit_1.generateFileIdFallback;
             }
         }
         catch {
-            _cryptoBytes = () => {
-                const hex = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
-                let seed = Date.now() % 2147483647;
-                const rng = () => { seed = (seed * 16807) % 2147483647; return seed; };
-                return hex.replace(/[xy]/g, (c) => {
-                    const r = (rng() % 16) | 0;
-                    const v = c === 'x' ? r : (r & 0x3) | 0x8;
-                    return v.toString(16);
-                });
-            };
+            _cryptoBytes = value_kit_1.generateFileIdFallback;
         }
     }
     return _cryptoBytes();

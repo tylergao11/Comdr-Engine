@@ -193,9 +193,10 @@ function applyProps(comp, props, compType) {
         // 标准属性
         const underscored = key.startsWith('_') ? key : '_' + key;
         const targetKey = underscored in comp ? underscored : (key in comp ? key : null);
-        // 模板中不存在 → 直接以 _key 追加（schema 提取可能不完整，如 Label._string）
+        // 模板中不存在 → 以 _key 追加但告警 Commander（schema 提取可能不完整，如 Label._string）
         if (!targetKey) {
             comp[underscored] = value;
+            dropped.push(key);
             continue;
         }
         if (value && typeof value === 'object' && !Array.isArray(value)) {

@@ -7,3 +7,4 @@
 7. Overlay 构建前必须先 `taskkill /f /im comdr-overlay.exe`，否则 exe 被锁。构建后复制到 `~/.comdr/overlay/`。
 8. MCP handler 每次调用自动清除 require 缓存（`reloadCoreModules()`），改 core 无需重启 MCP 进程。
 9.用自然语言输出mcp
+10. 提交前必须 `npm run build` 通过。

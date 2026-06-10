@@ -42,6 +42,7 @@ exports.ProbeV2 = void 0;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const path_utils_1 = require("./path-utils");
+const error_codes_1 = require("./error-codes");
 // ===== 统一入口 =====
 class ProbeV2 {
     _projectPath;
@@ -229,7 +230,7 @@ class ProbeV2 {
     }
     async findInDoc(query) {
         if (!this._currentDoc)
-            return { ok: false, kind: 'find-in-doc', error: 'No document open' };
+            return { ok: false, kind: 'find-in-doc', error: error_codes_1.MSG_NO_DOCUMENT_OPEN };
         const maxResults = this._currentDoc?.maxResults || 0;
         const cap = maxResults || 500; // 0 = 不限，默认返回最多 500（防御值）
         const results = this._currentDoc.findNodesByFuzzyName(query, cap);
@@ -252,7 +253,7 @@ class ProbeV2 {
     }
     async nodeDetail(fileId) {
         if (!this._currentDoc)
-            return { ok: false, kind: 'node-detail', error: 'No document open' };
+            return { ok: false, kind: 'node-detail', error: error_codes_1.MSG_NO_DOCUMENT_OPEN };
         const detail = this._currentDoc.detail(fileId);
         if (!detail)
             return { ok: false, kind: 'node-detail', error: `Node not found: ${fileId}` };
@@ -355,7 +356,7 @@ class ProbeV2 {
     }
     async readProperty(fileId, componentType, property) {
         if (!this._currentDoc)
-            return { ok: false, kind: 'property', error: 'No document open' };
+            return { ok: false, kind: 'property', error: error_codes_1.MSG_NO_DOCUMENT_OPEN };
         const result = this._currentDoc.readProperty(fileId, componentType, property);
         return {
             ok: true, kind: 'property',
@@ -428,24 +429,34 @@ class ProbeV2 {
                     fuzzy.push({ ...f, dist: d });
             }
             fuzzy.sort((a, b) => a.dist - b.dist);
+            if (fuzzy.length > 10)
+                process.stderr.write(`[comdr] probe-v2 fuzzy search truncated: ${fuzzy.length} → 10 results for "${lower}"\n`);
             return fuzzy.slice(0, 10).map((f) => {
                 let uuid = '';
                 try {
                     const meta = JSON.parse(fs.readFileSync(f.absPath + '.meta', 'utf8'));
                     uuid = meta.uuid || '';
                 }
-                catch { /* */ }
+                catch (e) {
+                    if (e.code !== 'ENOENT')
+                        process.stderr.write(`[comdr] probe-v2 .meta read failed: ${f.absPath}.meta — ${e.message}\n`);
+                }
                 return { path: f.relPath, uuid };
             });
         }
         matches.sort((a, b) => a.name.length - b.name.length);
+        if (matches.length > 10)
+            process.stderr.write(`[comdr] probe-v2 exact match truncated: ${matches.length} → 10 results for "${lower}"\n`);
         return matches.slice(0, 10).map((f) => {
             let uuid = '';
             try {
                 const meta = JSON.parse(fs.readFileSync(f.absPath + '.meta', 'utf8'));
                 uuid = meta.uuid || '';
             }
-            catch { /* */ }
+            catch (e) {
+                if (e.code !== 'ENOENT')
+                    process.stderr.write(`[comdr] probe-v2 .meta read failed: ${f.absPath}.meta — ${e.message}\n`);
+            }
             return { path: f.relPath, uuid };
         });
     }

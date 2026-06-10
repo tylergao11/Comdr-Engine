@@ -5,9 +5,7 @@
 
 // ----- 通用 -----
 export const ERR_UNKNOWN = 'E_UNKNOWN';
-export const ERR_TIMEOUT = 'E_TIMEOUT';
 export const ERR_CANCELLED = 'E_CANCELLED';
-export const ERR_NOT_IMPLEMENTED = 'E_NOT_IMPLEMENTED';
 export const ERR_INVALID_ARG = 'E_INVALID_ARG';
 
 // ----- 项目上下文 (PC) -----
@@ -25,13 +23,10 @@ export const ERR_CMD_NETWORK = 'CMD_NETWORK';
 export const ERR_CMD_RATE_LIMIT = 'CMD_RATE_LIMIT';
 export const ERR_CMD_AUTH = 'CMD_AUTH';
 export const ERR_CMD_SERVER_ERROR = 'CMD_SERVER_ERROR';
-export const ERR_CMD_PARSE = 'CMD_PARSE';
 export const ERR_CMD_MAX_RETRIES = 'CMD_MAX_RETRIES';
 
 // ----- DSL (DSL) -----
-export const ERR_DSL_PARSE = 'DSL_PARSE';
 export const ERR_DSL_UNKNOWN_CMD = 'DSL_UNKNOWN_CMD';
-export const ERR_DSL_MISSING_ARG = 'DSL_MISSING_ARG';
 
 // ----- ToolCenter / Bridge (BR) -----
 export const ERR_BR_BRIDGE_OFFLINE = 'BR_BRIDGE_OFFLINE';

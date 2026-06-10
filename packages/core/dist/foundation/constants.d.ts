@@ -60,4 +60,16 @@ export declare const GATEWAY_MAX_CONSECUTIVE_SAME_ERROR = 2;
 export declare const GATEWAY_MAX_TURNS = 20;
 /** 会话摘要中最近创建资产展示条数。5 条足够 LLM 知道上次做了什么。 */
 export declare const SESSION_RECENT_CREATIONS = 5;
+/** Overlay 心跳文件最大有效年龄 (ms)。超过此值认为 overlay 进程已死，可重新拉起。 */
+export declare const OVERLAY_ALIVE_MAX_AGE_MS = 10000;
+/** Overlay 拉起锁超时 (ms)。超过此值认为上次 spawn 失败，锁可被抢占。应 > OVERLAY_ALIVE_MAX_AGE_MS。 */
+export declare const OVERLAY_LOCK_TIMEOUT_MS = 15000;
+/** 单次执行日志文件最大字节数（~1MB）。超过后保留最末 500 行。 */
+export declare const EXECUTION_LOG_MAX_BYTES = 1000000;
+/** token-usage 日志文件最大字节数（500KB）。超过后保留最末 1000 行。 */
+export declare const TOKEN_LOG_MAX_BYTES = 500000;
+/** Comdr 用户级数据目录名（位于 HOME 下）。桥接配置、overlay、session 等均在此目录。 */
+export declare const COMDIR_USER_DIR = ".comdr";
+/** Comdr 项目级数据目录名（位于项目 temp/ 下）。IPC inbox/outbox、心跳、执行日志均在此目录。 */
+export declare const COMDIR_PROJECT_DIR = "temp/comdr";
 //# sourceMappingURL=constants.d.ts.map

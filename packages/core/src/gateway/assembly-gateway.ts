@@ -45,10 +45,9 @@ import { ERR_DSL_UNKNOWN_CMD, ERR_ASM_INVALID_SPEC, ERR_SCH_COMPONENT_NOT_FOUND,
 
 // ===== 常量 =====
 
-import { GATEWAY_MAX_TURNS } from '../foundation/constants';
+import { GATEWAY_MAX_TURNS, GATEWAY_MAX_CONSECUTIVE_SAME_ERROR, TOKEN_LOG_MAX_BYTES } from '../foundation/constants';
 
 const MAX_HISTORY_TURNS = 5;
-const MAX_CONSECUTIVE_SAME_ERROR = 2;
 
 // ===== 主编排入口 =====
 
@@ -250,7 +249,7 @@ export class AssemblyGateway {
             // token-usage.log 旋转：每轮检查，超过 500KB 保留最末 1000 行
             try {
               const stat = fs.statSync(logPath);
-              if (stat.size > 500_000) {
+              if (stat.size > TOKEN_LOG_MAX_BYTES) {
                 const lines = fs.readFileSync(logPath, 'utf8').split('\n').filter(Boolean);
                 if (lines.length > 1000) {
                   fs.writeFileSync(logPath, lines.slice(-1000).join('\n') + '\n', 'utf8');
@@ -435,8 +434,8 @@ export class AssemblyGateway {
 
             // 熔断：连续同一错误 ≥ 上限，或跨轮累计同一编辑错误 ≥ 上限×2
             const cumulativeEditErrors = this._editErrorCounts.get(errKey) || 0;
-            if (this._consecutiveSameError >= MAX_CONSECUTIVE_SAME_ERROR || cumulativeEditErrors >= MAX_CONSECUTIVE_SAME_ERROR * 2) {
-              const reason = cumulativeEditErrors >= MAX_CONSECUTIVE_SAME_ERROR * 2
+            if (this._consecutiveSameError >= GATEWAY_MAX_CONSECUTIVE_SAME_ERROR || cumulativeEditErrors >= GATEWAY_MAX_CONSECUTIVE_SAME_ERROR * 2) {
+              const reason = cumulativeEditErrors >= GATEWAY_MAX_CONSECUTIVE_SAME_ERROR * 2
                 ? `Stuck: "${errKey}" occurred ${cumulativeEditErrors} times across rounds`
                 : `Stuck: "${errKey}" x${this._consecutiveSameError} consecutive`;
               emitEvent({ kind: 'session-error', round, error: reason });
@@ -495,8 +494,8 @@ export class AssemblyGateway {
               messages.push({ role: 'user', content: feedback });
               chainBroken = true;
               const errKey = 'write:auto';
-              this._lastErrorKey = errKey;
               this._consecutiveSameError = (this._lastErrorKey === errKey) ? this._consecutiveSameError + 1 : 1;
+              this._lastErrorKey = errKey;
             }
           }
         }

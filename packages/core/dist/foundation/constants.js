@@ -4,7 +4,7 @@
 // 每个常量必须有明确的"为什么是这个值"的注释
 // ============================================================
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SESSION_RECENT_CREATIONS = exports.GATEWAY_MAX_TURNS = exports.GATEWAY_MAX_CONSECUTIVE_SAME_ERROR = exports.LLM_ERROR_DETAIL_MAX = exports.DISPLAY_FALLBACK_MAX = exports.LLM_MAX_RETRIES = exports.LLM_TEMPERATURE = exports.LLM_MAX_TOKENS = exports.IPC_HEARTBEAT_MAX_AGE_MS = exports.IPC_TIMEOUT_MS = exports.IPC_POLL_MS = exports.TREE_MAX_COMPONENTS = exports.TREE_MAX_DEPTH = exports.TREE_MAX_NODES = exports.EVENT_OBJ_KEYS_PREVIEW = exports.EVENT_OBJ_KEYS_MAX = exports.EVENT_ARRAY_PASS_THROUGH = exports.EVENT_ARRAY_PREVIEW = exports.EVENT_STRING_MAX = exports.BUFFER_EDIT_HISTORY = exports.BUFFER_CONSOLE_LOGS = exports.LIST_CONSOLE_PULL = exports.LIST_CONSOLE_DISPLAY = exports.LIST_HEARTBEAT_SCRIPTS = exports.DIFF_OBJ_MAX = exports.DIFF_VALUE_MAX = exports.DISPLAY_ASK_MAX = exports.DISPLAY_NAME_MAX = exports.DISPLAY_UUID_PREFIX = exports.VERSION = void 0;
+exports.COMDIR_PROJECT_DIR = exports.COMDIR_USER_DIR = exports.TOKEN_LOG_MAX_BYTES = exports.EXECUTION_LOG_MAX_BYTES = exports.OVERLAY_LOCK_TIMEOUT_MS = exports.OVERLAY_ALIVE_MAX_AGE_MS = exports.SESSION_RECENT_CREATIONS = exports.GATEWAY_MAX_TURNS = exports.GATEWAY_MAX_CONSECUTIVE_SAME_ERROR = exports.LLM_ERROR_DETAIL_MAX = exports.DISPLAY_FALLBACK_MAX = exports.LLM_MAX_RETRIES = exports.LLM_TEMPERATURE = exports.LLM_MAX_TOKENS = exports.IPC_HEARTBEAT_MAX_AGE_MS = exports.IPC_TIMEOUT_MS = exports.IPC_POLL_MS = exports.TREE_MAX_COMPONENTS = exports.TREE_MAX_DEPTH = exports.TREE_MAX_NODES = exports.EVENT_OBJ_KEYS_PREVIEW = exports.EVENT_OBJ_KEYS_MAX = exports.EVENT_ARRAY_PASS_THROUGH = exports.EVENT_ARRAY_PREVIEW = exports.EVENT_STRING_MAX = exports.BUFFER_EDIT_HISTORY = exports.BUFFER_CONSOLE_LOGS = exports.LIST_CONSOLE_PULL = exports.LIST_CONSOLE_DISPLAY = exports.LIST_HEARTBEAT_SCRIPTS = exports.DIFF_OBJ_MAX = exports.DIFF_VALUE_MAX = exports.DISPLAY_ASK_MAX = exports.DISPLAY_NAME_MAX = exports.DISPLAY_UUID_PREFIX = exports.VERSION = void 0;
 // 版本号由 scripts/stamp-version.ts 自动生成，每次构建前运行
 var version_1 = require("./version");
 Object.defineProperty(exports, "VERSION", { enumerable: true, get: function () { return version_1.VERSION; } });
@@ -37,7 +37,7 @@ exports.BUFFER_CONSOLE_LOGS = 500;
 /** 编辑历史最大深度。50 次操作覆盖典型编辑会话，超过则丢弃最早记录。 */
 exports.BUFFER_EDIT_HISTORY = 50;
 // ===== 事件摘要 =====
-// 目标：Overlay 浮层是一个 380×180 的小窗口，不能显示大段 JSON。
+// 目标：Overlay 浮层是一个 380×240 的小窗口，不能显示大段 JSON。
 // 事件日志文件（execution-log.jsonl）由 Overlay 轮询，裁剪防止文件膨胀。
 /** 事件 data 字符串截断。Overlay 卡片只能显示 ~80 字符，200 已经给够。 */
 exports.EVENT_STRING_MAX = 200;
@@ -86,4 +86,22 @@ exports.GATEWAY_MAX_CONSECUTIVE_SAME_ERROR = 2;
 exports.GATEWAY_MAX_TURNS = 20;
 /** 会话摘要中最近创建资产展示条数。5 条足够 LLM 知道上次做了什么。 */
 exports.SESSION_RECENT_CREATIONS = 5;
+// ===== Overlay =====
+// 目标：悬浮窗进程管理和执行日志的生命周期参数。
+/** Overlay 心跳文件最大有效年龄 (ms)。超过此值认为 overlay 进程已死，可重新拉起。 */
+exports.OVERLAY_ALIVE_MAX_AGE_MS = 10_000;
+/** Overlay 拉起锁超时 (ms)。超过此值认为上次 spawn 失败，锁可被抢占。应 > OVERLAY_ALIVE_MAX_AGE_MS。 */
+exports.OVERLAY_LOCK_TIMEOUT_MS = 15_000;
+// ===== 日志轮转 =====
+// 目标：防止日志文件无限膨胀。
+/** 单次执行日志文件最大字节数（~1MB）。超过后保留最末 500 行。 */
+exports.EXECUTION_LOG_MAX_BYTES = 1_000_000;
+/** token-usage 日志文件最大字节数（500KB）。超过后保留最末 1000 行。 */
+exports.TOKEN_LOG_MAX_BYTES = 500_000;
+// ===== 路径 =====
+// 目标：集中定义 Comdr 使用的目录名，避免各处硬编码字符串。
+/** Comdr 用户级数据目录名（位于 HOME 下）。桥接配置、overlay、session 等均在此目录。 */
+exports.COMDIR_USER_DIR = '.comdr';
+/** Comdr 项目级数据目录名（位于项目 temp/ 下）。IPC inbox/outbox、心跳、执行日志均在此目录。 */
+exports.COMDIR_PROJECT_DIR = 'temp/comdr';
 //# sourceMappingURL=constants.js.map

@@ -3,7 +3,7 @@
   "source": "engine-ts-source",
   "generatedBy": "extract-component-schema",
   "version": "resources",
-  "parsedAt": "2026-06-08T17:43:20.666Z",
+  "parsedAt": "2026-06-10T17:52:37.350Z",
   "components": {
     "cc.BitmapFont": {
       "properties": {

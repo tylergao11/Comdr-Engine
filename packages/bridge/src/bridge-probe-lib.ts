@@ -162,8 +162,11 @@ export = function createProbeLib(
     const components = (Array.isArray((node as unknown as Record<string, unknown>)._components)
       ? (node as unknown as Record<string, unknown>)._components
       : node.components || []) as CcComponent[];
-    return components
-      .filter(Boolean)
+    const filtered = components.filter(Boolean);
+    if (filtered.length > TREE_MAX_COMPS) {
+      process.stderr.write(`[comdr] bridge-probe-lib components truncated: ${filtered.length} → ${TREE_MAX_COMPS} for node ${node.name || node.uuid || 'unnamed'}\n`);
+    }
+    return filtered
       .slice(0, TREE_MAX_COMPS)
       .map((c) => describeComponent(c))
       .filter((x): x is Record<string, unknown> => x !== null);

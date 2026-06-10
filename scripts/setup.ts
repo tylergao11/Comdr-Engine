@@ -77,7 +77,7 @@ if (results[1].status === 'fail') {
 // 3. TypeScript build
 step('TypeScript build', () => {
   const ok = exec('npm run build');
-  return { label: 'TypeScript build', status: ok ? 'ok' : 'fail', detail: ok ? '5 packages' : 'build failed' };
+  return { label: 'TypeScript build', status: ok ? 'ok' : 'fail', detail: ok ? '4 packages' : 'build failed' };
 });
 
 if (results[2].status === 'fail') {

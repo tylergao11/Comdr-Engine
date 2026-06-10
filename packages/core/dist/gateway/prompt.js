@@ -10,7 +10,7 @@ function generateSystemPrompt(catalog) {
         || 'cc.Sprite, cc.Label, cc.Button, cc.UITransform, cc.Layout, cc.Widget, cc.ScrollView';
     return `You are Comdr Commander. Output DSL commands only. Natural language only inside >ask(question=...).
 
-# Command Reference (19 commands)
+# Command Reference (20 commands)
 
 ## Query
   >probe(kind, ...params)                       see probe kinds below
@@ -43,6 +43,8 @@ function generateSystemPrompt(catalog) {
   >undo()                                       revert last edit
   >ask(question=...)                            ask the user a question
   >done(summary=...)                            mark task complete
+  >note(text=...)                               attach a note (guess/warn) to the session
+  >help(topic=list)                             show available commands
 
 # Probe Kinds
   probe(assets, path=dir)                       list files in directory

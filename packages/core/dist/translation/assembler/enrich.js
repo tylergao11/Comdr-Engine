@@ -18,24 +18,29 @@ function autoTempId(prefix) {
 function resetEnrichCounters() {
     _autoIdCounter = 0;
 }
-/** Enrich：返回一个新的 CompileSpec，包含所有 knowledge 展开 */
+/** Enrich：返回一个新的 CompileSpec，包含所有 knowledge 展开。finally 保证计数器即使异常也重置。 */
 function enrich(spec, catalog, internalCatalog) {
     resetEnrichCounters();
-    const enrichedNodes = [];
-    for (const node of spec.nodes) {
-        const expanded = expandNode(node, catalog, internalCatalog);
-        enrichedNodes.push(...expanded);
-    }
-    // 去重（可能有 knowledge 展开的子节点与已有节点重名）
-    const seen = new Set();
-    const deduped = [];
-    for (const node of enrichedNodes) {
-        if (!seen.has(node.tempId)) {
-            seen.add(node.tempId);
-            deduped.push(node);
+    try {
+        const enrichedNodes = [];
+        for (const node of spec.nodes) {
+            const expanded = expandNode(node, catalog, internalCatalog);
+            enrichedNodes.push(...expanded);
         }
+        // 去重（可能有 knowledge 展开的子节点与已有节点重名）
+        const seen = new Set();
+        const deduped = [];
+        for (const node of enrichedNodes) {
+            if (!seen.has(node.tempId)) {
+                seen.add(node.tempId);
+                deduped.push(node);
+            }
+        }
+        return { path: spec.path, name: spec.name, nodes: deduped };
     }
-    return { path: spec.path, name: spec.name, nodes: deduped };
+    finally {
+        resetEnrichCounters();
+    }
 }
 // ===== 节点展开 =====
 /** 需自动补 UITransform 的典型 2D 组件 — 模块级常量，不在循环内反复 new */

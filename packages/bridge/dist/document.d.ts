@@ -10,7 +10,7 @@ export declare const EditType: {
     readonly ADD_NODE_TREE: "add-node-tree";
 };
 export type EditType = (typeof EditType)[keyof typeof EditType];
-export type DocumentKind = 'scene' | 'prefab';
+export type DocumentKind = 'scene' | 'prefab' | 'none';
 interface CocosObject {
     __type__?: string;
     __id__?: number;

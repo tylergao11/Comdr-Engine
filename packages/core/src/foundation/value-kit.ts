@@ -19,12 +19,16 @@ export function stableHash(input: string, length: number = 16): string {
   return crypto.createHash('sha256').update(input).digest('hex').slice(0, length);
 }
 
-/** 读 UTF-8 JSON 文件，解析失败返回 null。调用方必须在 null 时做 fallback 处理。 */
+/** 读 UTF-8 JSON 文件，解析失败返回 null。调用方必须在 null 时做 fallback 处理。
+ *  ENOENT（文件不存在）静默返回 null；其他错误写 stderr 后返回 null。 */
 export function readJsonUtf8(filePath: string): unknown | null {
   try {
     const raw = fs.readFileSync(filePath, 'utf8').replace(/^﻿/, '');
     return JSON.parse(raw);
-  } catch {
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code !== 'ENOENT') {
+      process.stderr.write(`[comdr] readJsonUtf8 failed: ${filePath} — ${(e as Error).message}\n`);
+    }
     return null;
   }
 }

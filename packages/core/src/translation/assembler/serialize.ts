@@ -9,11 +9,9 @@
 import {
   CompileSpec,
   PrefabJson,
-  SerializedComponent,
   RefResolver,
   NOOP_RESOLVER,
   VALUE_TYPE_NAMES,
-  isEngineComponentType,
   isInfraType,
   IdRef,
 } from '../../model/cocos-world';

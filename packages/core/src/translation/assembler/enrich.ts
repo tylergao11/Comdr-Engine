@@ -23,9 +23,10 @@ export function resetEnrichCounters(): void {
   _autoIdCounter = 0;
 }
 
-/** Enrich：返回一个新的 CompileSpec，包含所有 knowledge 展开 */
+/** Enrich：返回一个新的 CompileSpec，包含所有 knowledge 展开。finally 保证计数器即使异常也重置。 */
 export function enrich(spec: CompileSpec, catalog: ComponentCatalog, internalCatalog?: InternalAssetCatalog): CompileSpec {
   resetEnrichCounters();
+  try {
   const enrichedNodes: NodeSpec[] = [];
 
   for (const node of spec.nodes) {
@@ -44,6 +45,9 @@ export function enrich(spec: CompileSpec, catalog: ComponentCatalog, internalCat
   }
 
   return { path: spec.path, name: spec.name, nodes: deduped };
+  } finally {
+    resetEnrichCounters();
+  }
 }
 
 // ===== 节点展开 =====

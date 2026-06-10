@@ -13,4 +13,5 @@ export declare const ERR_DOC_ROOT_NOT_FOUND = "DOC_ROOT_NOT_FOUND";
 export declare const ERR_DOC_TREE_BUILD_ERROR = "DOC_TREE_BUILD_ERROR";
 export declare const ERR_DOC_AMBIGUOUS_NODE = "DOC_AMBIGUOUS_NODE";
 export declare const ERR_BR_NO_DOC = "BR_NO_DOC";
+export declare const MSG_NO_DOCUMENT_OPEN = "No document open";
 //# sourceMappingURL=error-codes.d.ts.map

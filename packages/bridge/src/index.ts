@@ -11,7 +11,7 @@ import { AssetWriter } from './asset-writer';
 import { normalizeAssetPath } from './path-utils';
 import { ResourceIndex } from './resource-index';
 import { TaskBridge } from './task-bridge';
-import { ERR_BR_NO_DOC } from './error-codes';
+import { ERR_BR_NO_DOC, MSG_NO_DOCUMENT_OPEN } from './error-codes';
 
 export { VERSION } from './version';
 
@@ -246,12 +246,12 @@ async function runTaskCardFromEditor(taskCard: {
     }
     case 'edit': {
       const doc = getDoc();
-      if (!doc) return { ok: false, error: 'No document open', code: ERR_BR_NO_DOC };
+      if (!doc) return { ok: false, error: MSG_NO_DOCUMENT_OPEN, code: ERR_BR_NO_DOC };
       return doc.edit(payload.editType as string, payload);
     }
     case 'save': {
       const doc = getDoc();
-      if (!doc) return { ok: false, error: 'No document open', code: ERR_BR_NO_DOC };
+      if (!doc) return { ok: false, error: MSG_NO_DOCUMENT_OPEN, code: ERR_BR_NO_DOC };
       const rawDbUrl = doc.dbUrl;
       const normalized = normalizeAssetPath(rawDbUrl);
       const savePath = path.join(projectPath, normalized.fsPath);

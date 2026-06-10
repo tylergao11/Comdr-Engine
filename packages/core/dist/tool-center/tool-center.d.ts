@@ -8,6 +8,7 @@ export interface ToolCenterOptions {
     timeoutMs?: number;
     pollMs?: number;
 }
+/** bridge.json 完整心跳包。与 document-state.ts:BridgeHeartbeat 同源，结构超集。 */
 export interface BridgeHeartbeatInfo {
     schema: string;
     projectPath: string;

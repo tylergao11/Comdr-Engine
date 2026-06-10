@@ -65,8 +65,9 @@ export function splitTokens(text: string): string[] {
   const remaining = current.trim();
   if (remaining) tokens.push(remaining);
 
-  // 恢复逻辑：Commander 忘记分号时尝试按 > 拆分（best-effort，不保证 100% 正确）
+  // 恢复逻辑：Commander 忘记分号时尝试按 > 拆分（best-effort，不可靠——字符串内 ) > 会导致误切割）
   if (tokens.length === 1 && (tokens[0].match(/>/g) || []).length > 1) {
+    process.stderr.write(`[comdr] DSL recovery triggered — Commander may have omitted ';' separators. Input: ${tokens[0].slice(0, 200)}\n`);
     // 策略1: split on ) followed by > (most reliable — ) terminates commands, > starts new)
     const recovered: string[] = [];
     const parts = tokens[0].split(/\)\s*(?=>)/g);
@@ -254,6 +255,7 @@ export function coerceVal(v: string): unknown {
       try {
         return convertDslToJson(v);
       } catch {
+        process.stderr.write(`[comdr] DSL coerceVal: both JSON.parse and convertDslToJson failed for: ${v.slice(0, 120)}\n`);
         return v;
       }
     }
@@ -330,8 +332,10 @@ export function parseDslOutput(text: string): ParsedDslOutput {
     if (['node', 'comp', 'child'].includes(name)) {
       if (compileSpecs.length > 0) {
         compileSpecs.push({ ...args, type: name });
+      } else {
+        // 块外的 node/comp/child 无意义，告知 Commander
+        warnings.push(`Command '>${name}' ignored: must be inside a compile block`);
       }
-      // 块外的 node/comp/child 被静默丢弃 — 它们只在 compile 块中有意义
       continue;
     }
 

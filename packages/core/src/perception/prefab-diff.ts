@@ -27,6 +27,7 @@ interface CocosObject {
 
 // ===== 差异输出类型 =====
 
+/** DiffEntry.type — 通过 DiffEntry 间接使用，非直接 import */
 export type DiffType = 'added' | 'removed' | 'modified';
 
 export interface DiffEntry {

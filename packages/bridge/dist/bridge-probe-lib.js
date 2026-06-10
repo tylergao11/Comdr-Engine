@@ -146,8 +146,11 @@ module.exports = function createProbeLib(cc, EditorExtends) {
         const components = (Array.isArray(node._components)
             ? node._components
             : node.components || []);
-        return components
-            .filter(Boolean)
+        const filtered = components.filter(Boolean);
+        if (filtered.length > TREE_MAX_COMPS) {
+            process.stderr.write(`[comdr] bridge-probe-lib components truncated: ${filtered.length} → ${TREE_MAX_COMPS} for node ${node.name || node.uuid || 'unnamed'}\n`);
+        }
+        return filtered
             .slice(0, TREE_MAX_COMPS)
             .map((c) => describeComponent(c))
             .filter((x) => x !== null);

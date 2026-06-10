@@ -5,9 +5,9 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { normalizeSlash, nowISO, generateUuid } from '../foundation/value-kit';
+import { normalizeSlash, nowISO, generateUuid, writeJsonAtomic } from '../foundation/value-kit';
 import { CmdResult } from '../types';
-import { ERR_BR_BRIDGE_OFFLINE, ERR_BR_TASK_TIMEOUT } from '../errors/error-codes';
+import { ERR_CANCELLED, ERR_BR_BRIDGE_OFFLINE, ERR_BR_TASK_TIMEOUT } from '../errors/error-codes';
 import { IPC_POLL_MS, IPC_TIMEOUT_MS, IPC_HEARTBEAT_MAX_AGE_MS } from '../foundation/constants';
 
 // ===== 类型 =====
@@ -23,6 +23,7 @@ export interface ToolCenterOptions {
   pollMs?: number;
 }
 
+/** bridge.json 完整心跳包。与 document-state.ts:BridgeHeartbeat 同源，结构超集。 */
 export interface BridgeHeartbeatInfo {
   schema: string;
   projectPath: string;
@@ -97,16 +98,9 @@ export class ToolCenter {
       createdAt: nowISO(),
     };
 
-    // 原子写入 inbox
+    // 原子写入 inbox（复用 value-kit 的标准模式）
     const inboxPath = path.join(this._inbox, `${id}.json`);
-    const tmpPath = inboxPath + '.tmp.' + Date.now();
-    fs.writeFileSync(tmpPath, JSON.stringify(request, null, 2) + '\n', 'utf8');
-    try {
-      fs.renameSync(tmpPath, inboxPath);
-    } catch {
-      fs.writeFileSync(inboxPath, JSON.stringify(request, null, 2) + '\n', 'utf8');
-      try { fs.rmSync(tmpPath, { force: true }); } catch { /* ignore */ }
-    }
+    writeJsonAtomic(inboxPath, request, true);
 
     // 轮询结果
     const startTime = Date.now();
@@ -115,7 +109,7 @@ export class ToolCenter {
     while (Date.now() - startTime < this._timeoutMs) {
       if (signal?.aborted) {
         try { fs.rmSync(inboxPath, { force: true }); } catch { /* ignore */ }
-        return { ok: false, error: 'Cancelled', errorCode: 'E_CANCELLED' };
+        return { ok: false, error: 'Cancelled', errorCode: ERR_CANCELLED };
       }
       await sleep(this._pollMs);
 
@@ -141,8 +135,18 @@ export class ToolCenter {
           try { fs.rmSync(inboxPath, { force: true }); } catch { /* ignore */ }
 
           // Bridge 返回 { ok, result, error, ... }，实际操作结果在 result 中
-          const inner = (result.result as Record<string, unknown>) || {};
           const bridgeOk = result.ok === true;
+          // Bridge 成功但缺 result 字段 → 编码异常，当作失败处理
+          if (bridgeOk && !result.result) {
+            process.stderr.write(`[comdr] Bridge response missing 'result' field for task ${id}\n`);
+            return {
+              ok: false,
+              type: task.type,
+              error: 'Bridge response missing result field',
+              errorCode: 'BR_INVALID_RESPONSE',
+            };
+          }
+          const inner = (result.result as Record<string, unknown>) || {};
           // 如果 Bridge 层成功，取内层结果；否则 Bridge 本身失败
           const actualOk = bridgeOk ? (inner.ok !== false) : false;
           return {

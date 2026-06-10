@@ -88,9 +88,11 @@ class ResourceIndex {
         return this._scripts;
     }
     getSummary() {
+        const totalScripts = this._scripts.length;
         return {
-            scriptCount: this._scripts.length,
+            scriptCount: totalScripts,
             assetCount: this._assetPaths.size,
+            truncated: totalScripts > 50,
             scripts: this._scripts.slice(0, 50).map((s) => ({
                 name: s.name,
                 path: s.path,

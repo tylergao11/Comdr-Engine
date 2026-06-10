@@ -112,6 +112,7 @@ export interface FindInDocData {
   }>;
 }
 
+/** ProbeData 联合成员 — 通过 ProbeData 间接使用，非直接 import */
 export interface NodeDetailData {
   kind: 'node-detail';
   fileId: string;

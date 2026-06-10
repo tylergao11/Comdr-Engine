@@ -93,20 +93,9 @@ class ToolCenter {
             taskCard: task,
             createdAt: (0, value_kit_1.nowISO)(),
         };
-        // 原子写入 inbox
+        // 原子写入 inbox（复用 value-kit 的标准模式）
         const inboxPath = path.join(this._inbox, `${id}.json`);
-        const tmpPath = inboxPath + '.tmp.' + Date.now();
-        fs.writeFileSync(tmpPath, JSON.stringify(request, null, 2) + '\n', 'utf8');
-        try {
-            fs.renameSync(tmpPath, inboxPath);
-        }
-        catch {
-            fs.writeFileSync(inboxPath, JSON.stringify(request, null, 2) + '\n', 'utf8');
-            try {
-                fs.rmSync(tmpPath, { force: true });
-            }
-            catch { /* ignore */ }
-        }
+        (0, value_kit_1.writeJsonAtomic)(inboxPath, request, true);
         // 轮询结果
         const startTime = Date.now();
         const outboxPath = path.join(this._outbox, `${id}.json`);
@@ -116,7 +105,7 @@ class ToolCenter {
                     fs.rmSync(inboxPath, { force: true });
                 }
                 catch { /* ignore */ }
-                return { ok: false, error: 'Cancelled', errorCode: 'E_CANCELLED' };
+                return { ok: false, error: 'Cancelled', errorCode: error_codes_1.ERR_CANCELLED };
             }
             await sleep(this._pollMs);
             if (!fs.existsSync(outboxPath))
@@ -144,8 +133,18 @@ class ToolCenter {
                     }
                     catch { /* ignore */ }
                     // Bridge 返回 { ok, result, error, ... }，实际操作结果在 result 中
-                    const inner = result.result || {};
                     const bridgeOk = result.ok === true;
+                    // Bridge 成功但缺 result 字段 → 编码异常，当作失败处理
+                    if (bridgeOk && !result.result) {
+                        process.stderr.write(`[comdr] Bridge response missing 'result' field for task ${id}\n`);
+                        return {
+                            ok: false,
+                            type: task.type,
+                            error: 'Bridge response missing result field',
+                            errorCode: 'BR_INVALID_RESPONSE',
+                        };
+                    }
+                    const inner = result.result || {};
                     // 如果 Bridge 层成功，取内层结果；否则 Bridge 本身失败
                     const actualOk = bridgeOk ? (inner.ok !== false) : false;
                     return {

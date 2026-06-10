@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { generateFileId } from './id-utils';
 import { normalizeAssetPath } from './path-utils';
+import { MSG_NO_DOCUMENT_OPEN } from './error-codes';
 
 // 本地常量（与 core/src/model/cocos-world.ts 保持一致）
 const LAYER_UI_2D = 33554432;
@@ -42,7 +43,7 @@ import {
 
 // ====== 类型 ======
 
-export type DocumentKind = 'scene' | 'prefab';
+export type DocumentKind = 'scene' | 'prefab' | 'none';
 
 interface CocosObject {
   __type__?: string;
@@ -550,7 +551,11 @@ export class Document {
     const sortFn = (a: typeof this._nodeFlatIndex[0], b: typeof this._nodeFlatIndex[0]) => b.childCount - a.childCount;
     exacts.sort(sortFn); subs.sort(sortFn); fuzzy.sort(sortFn);
 
-    const result = [...exacts, ...subs, ...fuzzy].slice(0, max);
+    const combined = [...exacts, ...subs, ...fuzzy];
+    if (combined.length > max) {
+      process.stderr.write(`[comdr] document fuzzy search truncated: ${combined.length} → ${max} results for "${query}"\n`);
+    }
+    const result = combined.slice(0, max);
     return result.map((e) => ({ name: e.name, fileId: e.fileId, path: e.path, childCount: e.childCount, compTypes: e.compTypes }));
   }
 
@@ -695,9 +700,11 @@ export class Document {
   }
 
   save(): { ok: boolean; path?: string; error?: string } {
-    if (!this._json) return { ok: false, error: 'No document open' };
+    if (!this._json) return { ok: false, error: MSG_NO_DOCUMENT_OPEN };
+    const targetPath = this._dbUrl || this._path;
+    if (!targetPath) return { ok: false, error: 'No path set — use setPath() or open an existing asset first' };
     const content = this.serialize();
-    fs.writeFileSync(this._dbUrl || this._path, content, 'utf8');
+    fs.writeFileSync(targetPath, content, 'utf8');
     this._dirty = false;
     this._snapshot = null;
     this._undoStack = [];
@@ -1473,6 +1480,10 @@ export class Document {
         if (vObj.__uuid__ || vObj.__type__ || typeof vObj.__id__ === 'number') {
           return value;
         }
+      }
+      if (value === null || value === undefined) {
+        process.stderr.write(`[comdr] _normalizeValue: coercing ${value} to empty string for string-typed field\n`);
+        return '';
       }
       return String(value);
     }

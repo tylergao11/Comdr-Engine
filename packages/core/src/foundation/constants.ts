@@ -40,7 +40,7 @@ export const BUFFER_CONSOLE_LOGS = 500;
 export const BUFFER_EDIT_HISTORY = 50;
 
 // ===== 事件摘要 =====
-// 目标：Overlay 浮层是一个 380×180 的小窗口，不能显示大段 JSON。
+// 目标：Overlay 浮层是一个 380×240 的小窗口，不能显示大段 JSON。
 // 事件日志文件（execution-log.jsonl）由 Overlay 轮询，裁剪防止文件膨胀。
 
 /** 事件 data 字符串截断。Overlay 卡片只能显示 ~80 字符，200 已经给够。 */
@@ -97,3 +97,27 @@ export const GATEWAY_MAX_CONSECUTIVE_SAME_ERROR = 2;
 export const GATEWAY_MAX_TURNS = 20;
 /** 会话摘要中最近创建资产展示条数。5 条足够 LLM 知道上次做了什么。 */
 export const SESSION_RECENT_CREATIONS = 5;
+
+// ===== Overlay =====
+// 目标：悬浮窗进程管理和执行日志的生命周期参数。
+
+/** Overlay 心跳文件最大有效年龄 (ms)。超过此值认为 overlay 进程已死，可重新拉起。 */
+export const OVERLAY_ALIVE_MAX_AGE_MS = 10_000;
+/** Overlay 拉起锁超时 (ms)。超过此值认为上次 spawn 失败，锁可被抢占。应 > OVERLAY_ALIVE_MAX_AGE_MS。 */
+export const OVERLAY_LOCK_TIMEOUT_MS = 15_000;
+
+// ===== 日志轮转 =====
+// 目标：防止日志文件无限膨胀。
+
+/** 单次执行日志文件最大字节数（~1MB）。超过后保留最末 500 行。 */
+export const EXECUTION_LOG_MAX_BYTES = 1_000_000;
+/** token-usage 日志文件最大字节数（500KB）。超过后保留最末 1000 行。 */
+export const TOKEN_LOG_MAX_BYTES = 500_000;
+
+// ===== 路径 =====
+// 目标：集中定义 Comdr 使用的目录名，避免各处硬编码字符串。
+
+/** Comdr 用户级数据目录名（位于 HOME 下）。桥接配置、overlay、session 等均在此目录。 */
+export const COMDIR_USER_DIR = '.comdr';
+/** Comdr 项目级数据目录名（位于项目 temp/ 下）。IPC inbox/outbox、心跳、执行日志均在此目录。 */
+export const COMDIR_PROJECT_DIR = 'temp/comdr';

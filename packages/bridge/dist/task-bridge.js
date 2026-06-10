@@ -45,7 +45,7 @@ const BRIDGE_SCHEMA = 'Comdr.cocos-task-bridge.v1';
 const REQUEST_SCHEMA = 'Comdr.cocos-task-request.v1';
 const RESULT_SCHEMA = 'Comdr.cocos-task-result.v1';
 // 本地常量（与 core/src/foundation/constants.ts 保持一致）
-const IPC_POLL_DEFAULT_MS = 500;
+const IPC_POLL_DEFAULT_MS = 250;
 const IPC_TIMEOUT_DEFAULT_MS = 120_000;
 const HEARTBEAT_SCHEMA_VERSION = '2.0.0';
 class TaskBridge {
@@ -281,6 +281,7 @@ class TaskBridge {
         const engineSource = this._discoverEngineSource();
         const internalAssets = this._discoverInternalAssets();
         const openDoc = this._opts.getOpenDocument?.() || null;
+        // 心跳结构须与 core/src/tool-center.ts:BridgeHeartbeatInfo 兼容
         const info = {
             schema: BRIDGE_SCHEMA,
             projectPath: this._opts.getProjectPath(),

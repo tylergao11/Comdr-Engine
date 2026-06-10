@@ -15,9 +15,7 @@
     "watch": "tsc --build --watch"
   },
   "dependencies": {
-    "@comdr/core": "*",
-    "puppeteer-core": "^25.1.0",
-    "sharp": "^0.34.5"
+    "@comdr/core": "*"
   },
   "devDependencies": {
     "@types/node": "^22.19.19"

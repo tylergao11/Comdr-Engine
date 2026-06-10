@@ -41,8 +41,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExecutionLogger = void 0;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-/** 日志文件最大字节数（~1000 条事件） */
-const MAX_LOG_BYTES = 1_000_000;
+const constants_1 = require("../foundation/constants");
 /** 超过上限时保留最末的行数 */
 const KEEP_LINES = 500;
 class ExecutionLogger {
@@ -70,7 +69,7 @@ class ExecutionLogger {
         if (++this._writeCount % 20 === 0) {
             try {
                 const stat = fs.statSync(this._logPath);
-                if (stat.size > MAX_LOG_BYTES) {
+                if (stat.size > constants_1.EXECUTION_LOG_MAX_BYTES) {
                     const lines = fs.readFileSync(this._logPath, 'utf8').split('\n').filter(Boolean);
                     if (lines.length > KEEP_LINES) {
                         const kept = lines.slice(-KEEP_LINES);
@@ -79,7 +78,9 @@ class ExecutionLogger {
                     }
                 }
             }
-            catch { /* rotation fails silently — log continues growing until next check */ }
+            catch (e) {
+                process.stderr.write(`[comdr] execution-log rotation failed: ${e.message}\n`);
+            }
         }
     }
 }

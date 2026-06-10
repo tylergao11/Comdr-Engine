@@ -49,7 +49,6 @@ export type CocosReference = IdRef | UuidRef;
 // ============================================================
 
 export type CocosPrimitive = string | number | boolean;
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CocosValueMap { [key: string]: CocosValue; }
 export type CocosValue =
   | CocosPrimitive

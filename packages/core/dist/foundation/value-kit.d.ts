@@ -2,7 +2,8 @@
 export declare function cloneJson<T>(value: T): T;
 /** 稳定哈希 (SHA-256 截断)，用于去重和缓存 key */
 export declare function stableHash(input: string, length?: number): string;
-/** 读 UTF-8 JSON 文件，解析失败返回 null。调用方必须在 null 时做 fallback 处理。 */
+/** 读 UTF-8 JSON 文件，解析失败返回 null。调用方必须在 null 时做 fallback 处理。
+ *  ENOENT（文件不存在）静默返回 null；其他错误写 stderr 后返回 null。 */
 export declare function readJsonUtf8(filePath: string): unknown | null;
 /** 原子写 JSON：先写 tmp，再 rename */
 export declare function writeJsonAtomic(filePath: string, data: unknown, pretty?: boolean): void;

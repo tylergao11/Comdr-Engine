@@ -65,7 +65,6 @@ const error_codes_1 = require("../errors/error-codes");
 // ===== 常量 =====
 const constants_1 = require("../foundation/constants");
 const MAX_HISTORY_TURNS = 5;
-const MAX_CONSECUTIVE_SAME_ERROR = 2;
 // ===== 主编排入口 =====
 async function runAssemblyProcess(options) {
     const gateway = new AssemblyGateway(options);
@@ -252,7 +251,7 @@ class AssemblyGateway {
                         // token-usage.log 旋转：每轮检查，超过 500KB 保留最末 1000 行
                         try {
                             const stat = fs.statSync(logPath);
-                            if (stat.size > 500_000) {
+                            if (stat.size > constants_1.TOKEN_LOG_MAX_BYTES) {
                                 const lines = fs.readFileSync(logPath, 'utf8').split('\n').filter(Boolean);
                                 if (lines.length > 1000) {
                                     fs.writeFileSync(logPath, lines.slice(-1000).join('\n') + '\n', 'utf8');
@@ -426,8 +425,8 @@ class AssemblyGateway {
                         messages.push({ role: 'user', content: feedback });
                         // 熔断：连续同一错误 ≥ 上限，或跨轮累计同一编辑错误 ≥ 上限×2
                         const cumulativeEditErrors = this._editErrorCounts.get(errKey) || 0;
-                        if (this._consecutiveSameError >= MAX_CONSECUTIVE_SAME_ERROR || cumulativeEditErrors >= MAX_CONSECUTIVE_SAME_ERROR * 2) {
-                            const reason = cumulativeEditErrors >= MAX_CONSECUTIVE_SAME_ERROR * 2
+                        if (this._consecutiveSameError >= constants_1.GATEWAY_MAX_CONSECUTIVE_SAME_ERROR || cumulativeEditErrors >= constants_1.GATEWAY_MAX_CONSECUTIVE_SAME_ERROR * 2) {
+                            const reason = cumulativeEditErrors >= constants_1.GATEWAY_MAX_CONSECUTIVE_SAME_ERROR * 2
                                 ? `Stuck: "${errKey}" occurred ${cumulativeEditErrors} times across rounds`
                                 : `Stuck: "${errKey}" x${this._consecutiveSameError} consecutive`;
                             emitEvent({ kind: 'session-error', round, error: reason });
@@ -484,8 +483,8 @@ class AssemblyGateway {
                             messages.push({ role: 'user', content: feedback });
                             chainBroken = true;
                             const errKey = 'write:auto';
-                            this._lastErrorKey = errKey;
                             this._consecutiveSameError = (this._lastErrorKey === errKey) ? this._consecutiveSameError + 1 : 1;
+                            this._lastErrorKey = errKey;
                         }
                     }
                 }

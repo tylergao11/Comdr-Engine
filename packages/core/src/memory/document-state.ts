@@ -21,6 +21,7 @@ export interface DocumentStateInfo {
   name: string | null;
 }
 
+/** 与 tool-center.ts:BridgeHeartbeatInfo 同源 bridge.json，保持兼容 */
 export interface BridgeHeartbeatDocument {
   kind?: string;
   path?: string;
@@ -30,6 +31,7 @@ export interface BridgeHeartbeatDocument {
   name?: string;
 }
 
+/** 与 tool-center.ts:BridgeHeartbeatInfo 同源 bridge.json，保持兼容 */
 export interface BridgeHeartbeat {
   openDocument?: BridgeHeartbeatDocument;
   hasOpenDocument?: boolean;

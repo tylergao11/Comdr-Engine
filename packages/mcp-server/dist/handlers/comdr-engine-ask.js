@@ -96,11 +96,42 @@ function bridgeVersion(projectPath) {
     return 'offline';
 }
 // ===== Overlay 自动拉起 =====
+// 本地常量（与 core/src/foundation/constants.ts 保持一致）
+/** Overlay 心跳文件最大有效年龄 (ms)。对应 core OVERLAY_ALIVE_MAX_AGE_MS。 */
+const OVERLAY_ALIVE_MAX_AGE_MS = 10_000;
+/** Overlay 拉起锁超时 (ms)。对应 core OVERLAY_LOCK_TIMEOUT_MS。 */
+const OVERLAY_LOCK_TIMEOUT_MS = 15_000;
+function acquireOverlayLock(lockPath, fs) {
+    // 原子排他创建锁文件：wx 模式只在文件不存在时成功，OS 级别保证唯一性
+    try {
+        const fd = fs.openSync(lockPath, 'wx');
+        fs.writeSync(fd, String(Date.now()));
+        fs.closeSync(fd);
+        return true; // 锁获取成功，当前进程负责拉起 overlay
+    }
+    catch (e) {
+        if (e.code === 'EEXIST') {
+            // 锁已存在，检查是否过期（超过超时说明上次 spawn 可能失败了，抢过来）
+            try {
+                const age = Date.now() - Number(fs.readFileSync(lockPath, 'utf8'));
+                if (age > OVERLAY_LOCK_TIMEOUT_MS) {
+                    fs.unlinkSync(lockPath); // 过期锁，抢占了重试
+                    return acquireOverlayLock(lockPath, fs);
+                }
+            }
+            catch { /* 读取失败不阻塞 */ }
+            return false; // 锁被其他调用者持有，本次不拉起
+        }
+        // 其他错误（权限等），保守返回 false
+        return false;
+    }
+}
 function ensureOverlayRunning(projectPath) {
     const { HOME, USERPROFILE } = process.env;
     const home = HOME || USERPROFILE || '.';
     const alivePath = `${home}/.comdr/overlay-alive`;
     const configPath = `${home}/.comdr/overlay-config.json`;
+    const lockPath = `${home}/.comdr/overlay-launching.lock`;
     try {
         const fs = require('fs');
         // 始终同步 project_path 到 overlay 配置
@@ -123,16 +154,32 @@ function ensureOverlayRunning(projectPath) {
                 process.stderr.write(`[comdr] overlay config write failed: ${e.message}\n`);
             }
         }
-        // 心跳文件 10s 内有效 → overlay 还活着，不重复拉起
+        // 心跳文件有效期内 → overlay 还活着，不重复拉起
         if (fs.existsSync(alivePath)) {
             const age = Date.now() - Number(fs.readFileSync(alivePath, 'utf8'));
-            if (age < 10000)
+            if (age < OVERLAY_ALIVE_MAX_AGE_MS) {
+                // overlay 已存活，清理可能残留的锁文件
+                try {
+                    if (fs.existsSync(lockPath))
+                        fs.unlinkSync(lockPath);
+                }
+                catch { /* */ }
                 return;
+            }
         }
+        // 原子锁：只允许一个调用者拉起 overlay，消除竞态
+        if (!acquireOverlayLock(lockPath, fs))
+            return;
         // 找到 overlay 二进制
         const bin = findOverlayBinary();
-        if (!bin)
+        if (!bin) {
+            try {
+                if (fs.existsSync(lockPath))
+                    fs.unlinkSync(lockPath);
+            }
+            catch { /* */ }
             return;
+        }
         const { spawn } = require('child_process');
         const proc = spawn(bin, [], { detached: true, stdio: 'ignore', shell: true });
         proc.unref();

@@ -44,6 +44,7 @@ const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const id_utils_1 = require("./id-utils");
 const path_utils_1 = require("./path-utils");
+const error_codes_1 = require("./error-codes");
 // 本地常量（与 core/src/model/cocos-world.ts 保持一致）
 const LAYER_UI_2D = 33554432;
 const MAX_UNDO_DEPTH = 50;
@@ -64,7 +65,7 @@ exports.EditType = {
     SET_ACTIVE: 'set-active',
     ADD_NODE_TREE: 'add-node-tree',
 };
-const error_codes_1 = require("./error-codes");
+const error_codes_2 = require("./error-codes");
 // ====== 可注入的组件模板提供者 ======
 // Bridge 部署到 Cocos 扩展目录时不能直接 import @comdr/core
 // 由 index.ts 在初始化时注入
@@ -160,7 +161,7 @@ class Document {
         const normalized = (0, path_utils_1.normalizeAssetPath)(assetPath);
         const fullPath = path.join(projectPath, normalized.fsPath);
         if (!fs.existsSync(fullPath)) {
-            return { ok: false, error: `File not found: ${assetPath}`, code: error_codes_1.ERR_DOC_ASSET_NOT_FOUND };
+            return { ok: false, error: `File not found: ${assetPath}`, code: error_codes_2.ERR_DOC_ASSET_NOT_FOUND };
         }
         let json;
         try {
@@ -168,10 +169,10 @@ class Document {
             json = JSON.parse(content);
         }
         catch (e) {
-            return { ok: false, error: `Failed to parse: ${e.message}`, code: error_codes_1.ERR_DOC_PARSE_ERROR };
+            return { ok: false, error: `Failed to parse: ${e.message}`, code: error_codes_2.ERR_DOC_PARSE_ERROR };
         }
         if (!Array.isArray(json)) {
-            return { ok: false, error: 'Invalid format: not an array', code: error_codes_1.ERR_DOC_INVALID_FORMAT };
+            return { ok: false, error: 'Invalid format: not an array', code: error_codes_2.ERR_DOC_INVALID_FORMAT };
         }
         const treeResult = Document._buildTree(json);
         if (!treeResult.ok)
@@ -281,7 +282,7 @@ class Document {
             }
         }
         if (!foundComp)
-            return { ok: false, error: `Component not found: ${fullType}`, code: error_codes_1.ERR_DOC_COMPONENT_NOT_FOUND };
+            return { ok: false, error: `Component not found: ${fullType}`, code: error_codes_2.ERR_DOC_COMPONENT_NOT_FOUND };
         if (propertyName) {
             const val = foundComp[propertyName] !== undefined
                 ? foundComp[propertyName]
@@ -404,41 +405,41 @@ class Document {
      *  edit() 和 readProperty() 在处理前调用此方法。 */
     resolveNodeRef(ref) {
         if (!ref)
-            return { ok: false, error: 'Missing node reference', code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: 'Missing node reference', code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         const trimmed = ref.trim().replace(/^#+/, '');
         if (!trimmed)
-            return { ok: false, error: 'Missing node reference', code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: 'Missing node reference', code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         // 1. fileId（22-23 字符 base64url）
         if (/^[a-zA-Z0-9_\-+/]{22,23}$/.test(trimmed)) {
             const found = this.findNode(trimmed);
             if (found)
                 return found;
-            return { ok: false, error: `Node not found: ${trimmed}. Probe first: >probe(find-in-doc, name=X)`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Node not found: ${trimmed}. Probe first: >probe(find-in-doc, name=X)`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         }
         // 2. /Path/To/Node — 精确路径匹配
         if (trimmed.startsWith('/') || trimmed.includes('/')) {
             const path = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed;
             for (const entry of this._nodeFlatIndex) {
                 if (entry.path === path) {
-                    return this.findNode(entry.fileId) || { ok: false, error: `Node not found: ${trimmed}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+                    return this.findNode(entry.fileId) || { ok: false, error: `Node not found: ${trimmed}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
                 }
             }
-            return { ok: false, error: `Node not found at path: ${trimmed}. Try >probe(find-in-doc, name=...) or use fileId.`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Node not found at path: ${trimmed}. Try >probe(find-in-doc, name=...) or use fileId.`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         }
         // 3. 模糊名 — 精确匹配优先，回退 substring，再回退 Levenshtein
         const matches = this._fuzzyMatchNames(trimmed);
         if (matches.length === 1) {
-            return this.findNode(matches[0].fileId) || { ok: false, error: `Node not found: ${trimmed}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return this.findNode(matches[0].fileId) || { ok: false, error: `Node not found: ${trimmed}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         }
         if (matches.length > 1) {
             return {
                 ok: false,
                 error: `Ambiguous name '${trimmed}': ${matches.length} matches. Use fileId or full path.`,
-                code: error_codes_1.ERR_DOC_AMBIGUOUS_NODE,
+                code: error_codes_2.ERR_DOC_AMBIGUOUS_NODE,
                 matches: matches.map((m) => ({ name: m.name, path: '/' + m.path, fileId: m.fileId })),
             };
         }
-        return { ok: false, error: `Node not found: ${trimmed}. Try >probe(find-in-doc, name=${trimmed}) first, then use the returned fileId.`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+        return { ok: false, error: `Node not found: ${trimmed}. Try >probe(find-in-doc, name=${trimmed}) first, then use the returned fileId.`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
     }
     /** 模糊名搜索（供 >probe(find-in-doc) 使用） */
     findNodesByFuzzyName(query, maxResults = 10) {
@@ -480,7 +481,11 @@ class Document {
         exacts.sort(sortFn);
         subs.sort(sortFn);
         fuzzy.sort(sortFn);
-        const result = [...exacts, ...subs, ...fuzzy].slice(0, max);
+        const combined = [...exacts, ...subs, ...fuzzy];
+        if (combined.length > max) {
+            process.stderr.write(`[comdr] document fuzzy search truncated: ${combined.length} → ${max} results for "${query}"\n`);
+        }
+        const result = combined.slice(0, max);
         return result.map((e) => ({ name: e.name, fileId: e.fileId, path: e.path, childCount: e.childCount, compTypes: e.compTypes }));
     }
     /** 从 TreeNode 重建扁平名索引
@@ -554,7 +559,7 @@ class Document {
                     result = this._addNodeTree((payload.parent || payload.nodeUuid || payload.node), payload.subtree, (payload.idMap || {}));
                     break;
                 default:
-                    return { ok: false, error: `Unknown edit type: ${editType}`, code: error_codes_1.ERR_DOC_INVALID_EDIT_TYPE };
+                    return { ok: false, error: `Unknown edit type: ${editType}`, code: error_codes_2.ERR_DOC_INVALID_EDIT_TYPE };
             }
             if (result.ok) {
                 const treeResult = Document._buildTree(this._json);
@@ -587,7 +592,7 @@ class Document {
                 }
                 else {
                     this._rollback();
-                    return { ok: false, error: `Tree rebuild failed: ${treeResult.error}`, code: error_codes_1.ERR_DOC_TREE_REBUILD_ERROR };
+                    return { ok: false, error: `Tree rebuild failed: ${treeResult.error}`, code: error_codes_2.ERR_DOC_TREE_REBUILD_ERROR };
                 }
             }
             else {
@@ -597,14 +602,17 @@ class Document {
         }
         catch (e) {
             this._rollback();
-            return { ok: false, error: e.message, code: error_codes_1.ERR_DOC_EDIT_ERROR };
+            return { ok: false, error: e.message, code: error_codes_2.ERR_DOC_EDIT_ERROR };
         }
     }
     save() {
         if (!this._json)
-            return { ok: false, error: 'No document open' };
+            return { ok: false, error: error_codes_1.MSG_NO_DOCUMENT_OPEN };
+        const targetPath = this._dbUrl || this._path;
+        if (!targetPath)
+            return { ok: false, error: 'No path set — use setPath() or open an existing asset first' };
         const content = this.serialize();
-        fs.writeFileSync(this._dbUrl || this._path, content, 'utf8');
+        fs.writeFileSync(targetPath, content, 'utf8');
         this._dirty = false;
         this._snapshot = null;
         this._undoStack = [];
@@ -646,19 +654,19 @@ class Document {
     _addComponent(nodeFileId, componentType, props) {
         const found = this.findNode(nodeFileId);
         if (!found)
-            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         const fullType = normalizeComponentType(componentType);
         // 检查重复：Cocos 节点不允许同类型组件出现多次
         const existingComps = found.nodeObj._components || [];
         for (const ref of existingComps) {
             const comp = this._json[ref.__id__];
             if (comp && !comp.__deleted__ && comp.__type__ === fullType) {
-                return { ok: false, error: `Component ${fullType} already exists on this node`, code: error_codes_1.ERR_DOC_DUPLICATE_COMPONENT };
+                return { ok: false, error: `Component ${fullType} already exists on this node`, code: error_codes_2.ERR_DOC_DUPLICATE_COMPONENT };
             }
         }
         const template = getComponentTemplate(fullType);
         if (!template)
-            return { ok: false, error: `Unknown component: ${fullType}`, code: error_codes_1.ERR_DOC_UNKNOWN_COMPONENT };
+            return { ok: false, error: `Unknown component: ${fullType}`, code: error_codes_2.ERR_DOC_UNKNOWN_COMPONENT };
         const compObj = JSON.parse(JSON.stringify(template));
         for (const key of Object.keys(props)) {
             Document._applyProp(compObj, key, props[key]);
@@ -685,9 +693,9 @@ class Document {
     _addNodeTree(parentFileId, subtree, idMap) {
         const parentFound = this.findNode(parentFileId);
         if (!parentFound)
-            return { ok: false, error: `Parent not found: ${parentFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Parent not found: ${parentFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         if (!Array.isArray(subtree) || subtree.length === 0) {
-            return { ok: false, error: 'Empty subtree', code: error_codes_1.ERR_DOC_INVALID_FORMAT };
+            return { ok: false, error: 'Empty subtree', code: error_codes_2.ERR_DOC_INVALID_FORMAT };
         }
         // 1. 计算 offset 并构建 localId → offsetId 映射
         const offset = this._json.length;
@@ -707,7 +715,7 @@ class Document {
             }
         }
         if (!isFinite(rootLocalId)) {
-            return { ok: false, error: 'Subtree has no root Node', code: error_codes_1.ERR_DOC_INVALID_FORMAT };
+            return { ok: false, error: 'Subtree has no root Node', code: error_codes_2.ERR_DOC_INVALID_FORMAT };
         }
         // 2. Offset 所有 __id__ 引用后 append
         // 诊断：dump 收到的 subtree（排查 Gateway→Bridge 传输问题）
@@ -818,13 +826,13 @@ class Document {
         if (!componentType || NODE_LIKE_TYPES.has(componentType)) {
             const nodeFound = this.findNode(nodeFileId);
             if (!nodeFound)
-                return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+                return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
             Document._applyProp(nodeFound.nodeObj, property, resolvedValue);
             return { ok: true };
         }
         const found = this.findComponentByType(nodeFileId, componentType);
         if (!found)
-            return { ok: false, error: `Component not found: ${componentType}`, code: error_codes_1.ERR_DOC_COMPONENT_NOT_FOUND };
+            return { ok: false, error: `Component not found: ${componentType}`, code: error_codes_2.ERR_DOC_COMPONENT_NOT_FOUND };
         Document._applyProp(found.compObj, property, resolvedValue);
         return { ok: true };
     }
@@ -837,7 +845,7 @@ class Document {
             const nodeFound = this.findNode(nodeFileId);
             if (!nodeFound) {
                 _flushSetPropsDiag({ stage: 'node-not-found', nodeFileId, componentType, props: resolved });
-                return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+                return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
             }
             for (const key of Object.keys(resolved)) {
                 Document._applyProp(nodeFound.nodeObj, key, resolved[key]);
@@ -863,7 +871,7 @@ class Document {
                 actualTypesOnNode: actualTypes,
                 props: resolved,
             });
-            return { ok: false, error: `Component not found: ${componentType}`, code: error_codes_1.ERR_DOC_COMPONENT_NOT_FOUND };
+            return { ok: false, error: `Component not found: ${componentType}`, code: error_codes_2.ERR_DOC_COMPONENT_NOT_FOUND };
         }
         // DIAG: 写入前快照 — 目标 key 的已有值
         const beforeSnap = {};
@@ -898,7 +906,7 @@ class Document {
     _deleteNode(nodeFileId) {
         const found = this.findNode(nodeFileId);
         if (!found)
-            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         const toTombstone = [];
         Document._collectSubtree(this._json, found.nodeIndex, toTombstone);
         for (const idx of toTombstone) {
@@ -920,7 +928,7 @@ class Document {
     _reparentNode(nodeFileId, newParentFileId) {
         const nodeFound = this.findNode(nodeFileId);
         if (!nodeFound)
-            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         // Remove from old parent
         for (const obj of this._json) {
             if (obj && !obj.__deleted__ && NODE_LIKE_TYPES.has(obj.__type__) && obj._children) {
@@ -934,11 +942,11 @@ class Document {
         }
         // 防止自引用循环
         if (newParentFileId === nodeFileId) {
-            return { ok: false, error: 'Cannot reparent a node to itself', code: error_codes_1.ERR_DOC_CYCLE_DETECTED };
+            return { ok: false, error: 'Cannot reparent a node to itself', code: error_codes_2.ERR_DOC_CYCLE_DETECTED };
         }
         const parentFound = this.findNode(newParentFileId);
         if (!parentFound)
-            return { ok: false, error: `Parent not found: ${newParentFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Parent not found: ${newParentFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         if (!parentFound.nodeObj._children)
             parentFound.nodeObj._children = [];
         parentFound.nodeObj._children.push({ __id__: nodeFound.nodeIndex });
@@ -948,7 +956,7 @@ class Document {
     _duplicateNode(nodeFileId, newName) {
         const found = this.findNode(nodeFileId);
         if (!found)
-            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         const indexMap = {};
         const self = this;
         function cloneObject(oldIdx) {
@@ -1042,7 +1050,7 @@ class Document {
     _setNodeActive(nodeFileId, active) {
         const found = this.findNode(nodeFileId);
         if (!found)
-            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_1.ERR_DOC_NODE_NOT_FOUND };
+            return { ok: false, error: `Node not found: ${nodeFileId}`, code: error_codes_2.ERR_DOC_NODE_NOT_FOUND };
         found.nodeObj._active = !!active;
         return { ok: true };
     }
@@ -1096,17 +1104,17 @@ class Document {
     // ===== Private static: tree building =====
     static _buildTree(jsonArray) {
         if (!Array.isArray(jsonArray) || jsonArray.length < 2) {
-            return { ok: false, error: 'Invalid prefab JSON: array too short', code: error_codes_1.ERR_DOC_INVALID_FORMAT };
+            return { ok: false, error: 'Invalid prefab JSON: array too short', code: error_codes_2.ERR_DOC_INVALID_FORMAT };
         }
         const wrapper = jsonArray[0];
         if (!wrapper?.__type__) {
-            return { ok: false, error: 'Invalid prefab: wrapper missing', code: error_codes_1.ERR_DOC_INVALID_FORMAT };
+            return { ok: false, error: 'Invalid prefab: wrapper missing', code: error_codes_2.ERR_DOC_INVALID_FORMAT };
         }
         const wrapperData = (wrapper.data ?? wrapper.scene);
         const rootNodeId = wrapperData?.__id__ ?? 1;
         const rootNode = jsonArray[rootNodeId];
         if (!rootNode || rootNode.__deleted__ || !_isNodeOrScene(rootNode.__type__)) {
-            return { ok: false, error: `Root node not found at index ${rootNodeId}`, code: error_codes_1.ERR_DOC_ROOT_NOT_FOUND };
+            return { ok: false, error: `Root node not found at index ${rootNodeId}`, code: error_codes_2.ERR_DOC_ROOT_NOT_FOUND };
         }
         const visited = {};
         // 顺带收集 flat name index：fileId → entry（_buildPaths 中 O(1) 回填 path）
@@ -1197,7 +1205,7 @@ class Document {
         };
         const rootTree = visit(rootNodeId);
         if (!rootTree)
-            return { ok: false, error: 'Failed to build root node tree', code: error_codes_1.ERR_DOC_TREE_BUILD_ERROR };
+            return { ok: false, error: 'Failed to build root node tree', code: error_codes_2.ERR_DOC_TREE_BUILD_ERROR };
         // 统计不可达对象（未被 rootTree 遍历到的非基础类型对象）
         let unreachable = 0;
         for (let i = 0; i < jsonArray.length; i++) {
@@ -1357,6 +1365,10 @@ class Document {
                 if (vObj.__uuid__ || vObj.__type__ || typeof vObj.__id__ === 'number') {
                     return value;
                 }
+            }
+            if (value === null || value === undefined) {
+                process.stderr.write(`[comdr] _normalizeValue: coercing ${value} to empty string for string-typed field\n`);
+                return '';
             }
             return String(value);
         }
